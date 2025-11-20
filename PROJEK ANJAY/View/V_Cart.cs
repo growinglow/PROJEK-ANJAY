@@ -1,0 +1,126 @@
+﻿using PROJEK_ANJAY.Controllers;
+using PROJEK_ANJAY.Models;
+using PROJEK_ANJAY.View;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing.Text;
+
+namespace PROJEK_ANJAY.View
+{
+    public partial class V_Cart : Form
+    {
+        private CartController cartController;
+        private User currentUser;
+        private List<M_Keranjang> ItemKeranjang;
+        private V_FormDashboard formDashboard;
+        public V_Cart(User user, V_FormDashboard dashboardForm)
+        {
+            InitializeComponent();
+            tblKeranjang.AutoGenerateColumns = false;
+            currentUser = user;
+            cartController = new CartController();
+            formDashboard = dashboardForm;
+            MessageBox.Show($"Username: {currentUser.Username}");
+
+            LoadItemKeranjang();
+        }
+    
+
+    private void LoadItemKeranjang()
+        {
+            try
+            {
+                ItemKeranjang = cartController.GetItemKeranjang(currentUser.Username);
+                tblKeranjang.Rows.Clear();
+                foreach (var item in ItemKeranjang)
+                {
+                    int rowIndex = tblKeranjang.Rows.Add(
+                        item.NamaProduk,
+                        item.Harga,
+                        item.Quantity,
+                        item.SubTotal
+                    );
+                }
+
+                CalculateTotal();
+                MessageBox.Show($"Data loaded: {ItemKeranjang.Count} items");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading cart: {ex.Message}");
+            }
+            }
+
+        private void CalculateTotal()
+        {
+            double total = ItemKeranjang.Sum(item => item.SubTotal);
+            lblTotal.Text = $"Total: Rp {total:N0}";
+        }
+
+        private void btnCheckout_Click(object sender, EventArgs e)
+        {
+            if (ItemKeranjang.Count == 0)
+            {
+                MessageBox.Show("Keranjang belanja kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            double total = ItemKeranjang.Sum(item => item.SubTotal);
+            var result = MessageBox.Show($"Checkout dengan total Rp{total:N0}?",
+                "Konfirmasi Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    // ✅ 1. UPDATE STOK UNTUK SETIAP PRODUK DI KERANJANG
+                    foreach (var item in ItemKeranjang)
+                    {
+                        bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
+
+                        if (!stockUpdated)
+                        {
+                            MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok mungkin tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return; // Batalkan checkout jika ada yang gagal
+                        }
+                    }
+
+                    // ✅ 2. CLEAR KERANJANG JIKA UPDATE STOK BERHASIL
+                    if (cartController.ClearKeranjang(currentUser.Username))
+                    {
+                        MessageBox.Show("Checkout berhasil dilakukan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        if (formDashboard != null)
+                        {
+                            formDashboard.Show();
+                            formDashboard.LoadProducts(); // ✅ REFRESH DATA PRODUK DI DASHBOARD
+                        }
+                        this.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error during checkout: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        
+        private void btnKembali_Click(object sender, EventArgs e)
+        {
+            if (formDashboard != null)
+            {
+                formDashboard.Show();
+            }
+            this.Close();
+        
+        }
+    }
+}
