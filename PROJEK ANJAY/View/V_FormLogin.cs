@@ -30,7 +30,7 @@ namespace PROJEK_ANJAY
             if (auth)
             {
                 MessageBox.Show($"Login berhasil. Selamat datang {user.Username}", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+
                 if (user.Username == "admin" && user.Password == "Admin#123")
                 {
                     // buka form produk
@@ -56,5 +56,11 @@ namespace PROJEK_ANJAY
         {
 
         }
+
+        private void V_FormLogin_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

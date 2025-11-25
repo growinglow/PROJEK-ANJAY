@@ -167,5 +167,65 @@ namespace PROJEK_ANJAY.Controllers
                 }
             }
         }
+        public bool SimpanTransaksi(string username, List<M_Keranjang> cartItems, bool isPaid)
+        {
+            using (var conn = new NpgsqlConnection(_context.connStr))
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. INSERT HEADER TRANSAKSI
+                        string query1 = @"
+                    INSERT INTO transaksi (username, total, is_paid) 
+                    VALUES (@username, @total, @is_paid) 
+                    RETURNING id";
+
+                        int totalAmount = (int)cartItems.Sum(item => item.SubTotal);
+
+                        int transaksiId;
+                        using (var cmd = new NpgsqlCommand(query1, conn))
+                        {
+                            cmd.Transaction = transaction;
+                            cmd.Parameters.AddWithValue("@username", username);
+                            cmd.Parameters.AddWithValue("@total", totalAmount);
+                            cmd.Parameters.AddWithValue("@is_paid", isPaid);
+
+                            transaksiId = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+
+                        string query2 = @"
+                    INSERT INTO detailTransaksi 
+                    (transaksi_id, produk_id, produk_nama, quantity, price, subtotal) 
+                    VALUES (@transaksi_id, @produk_id, @produk_nama, @quantity, @price, @subtotal)";
+
+                        foreach (var item in cartItems)
+                        {
+                            using (var cmd = new NpgsqlCommand(query2, conn))
+                            {
+                                cmd.Transaction = transaction;
+                                cmd.Parameters.AddWithValue("@transaksi_id", transaksiId);
+                                cmd.Parameters.AddWithValue("@produk_id", item.ProductId);
+                                cmd.Parameters.AddWithValue("@produk_nama", item.NamaProduk);
+                                cmd.Parameters.AddWithValue("@quantity", item.Quantity);
+                                cmd.Parameters.AddWithValue("@price", (int)item.Harga);
+                                cmd.Parameters.AddWithValue("@subtotal", (int)item.SubTotal);
+
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

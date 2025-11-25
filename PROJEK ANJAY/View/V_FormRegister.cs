@@ -36,8 +36,8 @@ namespace PROJEK_ANJAY
             User user = new User();
             user.Username = tbUsername.Text;
             user.Password = tbPassword.Text;
-            user.Email = tbEmail.Text;          
-            user.Notelp = tb.Text;
+            user.Email = tbEmail.Text;
+            user.Notelp = tbNotelp.Text;
 
             if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Password) || string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Notelp))
             {
@@ -60,6 +60,16 @@ namespace PROJEK_ANJAY
         }
 
         private void tbUsername_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbEmail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbNotelp_TextChanged(object sender, EventArgs e)
         {
 
         }

@@ -29,67 +29,51 @@
         private void InitializeComponent()
         {
             button1 = new Button();
-            label1 = new Label();
             tbUsername = new TextBox();
             tbPassword = new TextBox();
-            label2 = new Label();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(287, 219);
+            button1.BackColor = Color.Lime;
+            button1.Location = new Point(406, 413);
             button1.Name = "button1";
-            button1.Size = new Size(112, 34);
+            button1.Size = new Size(112, 49);
             button1.TabIndex = 0;
-            button1.Text = "login";
-            button1.UseVisualStyleBackColor = true;
+            button1.Text = "LOGIN";
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(237, 51);
-            label1.Name = "label1";
-            label1.Size = new Size(89, 25);
-            label1.TabIndex = 1;
-            label1.Text = "username";
             // 
             // tbUsername
             // 
-            tbUsername.Location = new Point(237, 79);
+            tbUsername.Location = new Point(351, 230);
             tbUsername.Name = "tbUsername";
-            tbUsername.Size = new Size(215, 31);
+            tbUsername.Size = new Size(201, 31);
             tbUsername.TabIndex = 2;
             tbUsername.TextChanged += tbUsername_TextChanged;
             // 
             // tbPassword
             // 
-            tbPassword.Location = new Point(237, 156);
+            tbPassword.Location = new Point(360, 308);
             tbPassword.Name = "tbPassword";
-            tbPassword.Size = new Size(215, 31);
+            tbPassword.Size = new Size(192, 31);
             tbPassword.TabIndex = 4;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(237, 128);
-            label2.Name = "label2";
-            label2.Size = new Size(89, 25);
-            label2.TabIndex = 3;
-            label2.Text = "password";
             // 
             // V_FormLogin
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackColor = Color.FromArgb(0, 64, 0);
+            BackgroundImage = Properties.Resources.LOGIN;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(722, 480);
             Controls.Add(tbPassword);
-            Controls.Add(label2);
             Controls.Add(tbUsername);
-            Controls.Add(label1);
             Controls.Add(button1);
+            DoubleBuffered = true;
             Name = "V_FormLogin";
             Text = "V_FormLogin";
+            Load += V_FormLogin_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -97,9 +81,7 @@
         #endregion
 
         private Button button1;
-        private Label label1;
         private TextBox tbUsername;
         private TextBox tbPassword;
-        private Label label2;
     }
 }

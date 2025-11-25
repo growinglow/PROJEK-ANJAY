@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             tblDashbord = new DataGridView();
-            Id2 = new DataGridViewTextBoxColumn();
             NamaProduk2 = new DataGridViewTextBoxColumn();
             Deskripsi2 = new DataGridViewTextBoxColumn();
             Harga2 = new DataGridViewTextBoxColumn();
@@ -40,6 +39,7 @@
             AddToCart = new DataGridViewButtonColumn();
             lblWelcome = new Label();
             LihatKeranjang = new Button();
+            btnPembayaran = new Button();
             ((System.ComponentModel.ISupportInitialize)tblDashbord).BeginInit();
             SuspendLayout();
             // 
@@ -47,20 +47,13 @@
             // 
             tblDashbord.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tblDashbord.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            tblDashbord.Columns.AddRange(new DataGridViewColumn[] { Id2, NamaProduk2, Deskripsi2, Harga2, Stok2, TambahQ, Qty, Kurangiplis, AddToCart });
-            tblDashbord.Location = new Point(200, 142);
+            tblDashbord.Columns.AddRange(new DataGridViewColumn[] { NamaProduk2, Deskripsi2, Harga2, Stok2, TambahQ, Qty, Kurangiplis, AddToCart });
+            tblDashbord.Location = new Point(436, 99);
             tblDashbord.Name = "tblDashbord";
             tblDashbord.RowHeadersWidth = 62;
-            tblDashbord.Size = new Size(788, 337);
+            tblDashbord.Size = new Size(669, 416);
             tblDashbord.TabIndex = 0;
             tblDashbord.CellContentClick += tblDashbord_CellContentClick;
-            // 
-            // Id2
-            // 
-            Id2.DataPropertyName = "Id";
-            Id2.HeaderText = "Id Produk";
-            Id2.MinimumWidth = 8;
-            Id2.Name = "Id2";
             // 
             // NamaProduk2
             // 
@@ -130,7 +123,7 @@
             // 
             // LihatKeranjang
             // 
-            LihatKeranjang.Location = new Point(200, 504);
+            LihatKeranjang.Location = new Point(458, 516);
             LihatKeranjang.Name = "LihatKeranjang";
             LihatKeranjang.Size = new Size(151, 34);
             LihatKeranjang.TabIndex = 2;
@@ -138,14 +131,31 @@
             LihatKeranjang.UseVisualStyleBackColor = true;
             LihatKeranjang.Click += LihatKeranjang_Click;
             // 
+            // btnPembayaran
+            // 
+            btnPembayaran.BackColor = Color.Transparent;
+            btnPembayaran.FlatStyle = FlatStyle.Flat;
+            btnPembayaran.Font = new Font("Segoe UI Black", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPembayaran.ForeColor = Color.FromArgb(0, 64, 64);
+            btnPembayaran.Location = new Point(61, 189);
+            btnPembayaran.Name = "btnPembayaran";
+            btnPembayaran.Size = new Size(242, 49);
+            btnPembayaran.TabIndex = 3;
+            btnPembayaran.Text = "Pembayaran";
+            btnPembayaran.UseVisualStyleBackColor = false;
+            // 
             // V_FormDashboard
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.PRODUK_PELANGGAN;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1117, 574);
+            Controls.Add(btnPembayaran);
             Controls.Add(LihatKeranjang);
             Controls.Add(lblWelcome);
             Controls.Add(tblDashbord);
+            DoubleBuffered = true;
             Name = "V_FormDashboard";
             Text = "V_FormDashboard";
             ((System.ComponentModel.ISupportInitialize)tblDashbord).EndInit();
@@ -158,7 +168,6 @@
         private DataGridView tblDashbord;
         private Label lblWelcome;
         private Button LihatKeranjang;
-        private DataGridViewTextBoxColumn Id2;
         private DataGridViewTextBoxColumn NamaProduk2;
         private DataGridViewTextBoxColumn Deskripsi2;
         private DataGridViewTextBoxColumn Harga2;
@@ -167,5 +176,6 @@
         private DataGridViewTextBoxColumn Qty;
         private DataGridViewButtonColumn Kurangiplis;
         private DataGridViewButtonColumn AddToCart;
+        private Button btnPembayaran;
     }
 }

@@ -18,7 +18,6 @@ namespace PROJEK_ANJAY.View
         private CartController cartController;
         private User currentUser;
         private List<M_Products> products;
-        private string welcomeMessage = "Welcome to our dashboard";
         public V_FormDashboard(User user)
         {
             InitializeComponent();
@@ -26,7 +25,6 @@ namespace PROJEK_ANJAY.View
             currentUser = user;
             productController = new ProductController();
             cartController = new CartController();
-            lblWelcome.Text = $"{welcomeMessage}, {currentUser.Username}!";
 
             LoadProducts();
         }

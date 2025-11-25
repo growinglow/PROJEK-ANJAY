@@ -27,13 +27,11 @@ namespace PROJEK_ANJAY.View
             currentUser = user;
             cartController = new CartController();
             formDashboard = dashboardForm;
-            MessageBox.Show($"Username: {currentUser.Username}");
 
             LoadItemKeranjang();
         }
-    
 
-    private void LoadItemKeranjang()
+        private void LoadItemKeranjang()
         {
             try
             {
@@ -50,14 +48,13 @@ namespace PROJEK_ANJAY.View
                 }
 
                 CalculateTotal();
-                MessageBox.Show($"Data loaded: {ItemKeranjang.Count} items");
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading cart: {ex.Message}");
             }
-            }
+        }
 
         private void CalculateTotal()
         {
@@ -81,7 +78,12 @@ namespace PROJEK_ANJAY.View
             {
                 try
                 {
-                    // ✅ 1. UPDATE STOK UNTUK SETIAP PRODUK DI KERANJANG
+                    bool simpanTransaksi = cartController.SimpanTransaksi(currentUser.Username, ItemKeranjang, true);
+                    if (!simpanTransaksi)
+                    {
+                        MessageBox.Show("Gagal menyimpan transaksi!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                     foreach (var item in ItemKeranjang)
                     {
                         bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
@@ -93,7 +95,6 @@ namespace PROJEK_ANJAY.View
                         }
                     }
 
-                    // ✅ 2. CLEAR KERANJANG JIKA UPDATE STOK BERHASIL
                     if (cartController.ClearKeranjang(currentUser.Username))
                     {
                         MessageBox.Show("Checkout berhasil dilakukan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -112,15 +113,83 @@ namespace PROJEK_ANJAY.View
                 }
             }
         }
-        
+
         private void btnKembali_Click(object sender, EventArgs e)
         {
-            if (formDashboard != null)
+            if (ItemKeranjang.Count > 0)
+            {
+                var result = MessageBox.Show("Jika kamu kembali, semua item keranjang akan hilang. yakin ingin kembali?", "Peringatan", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    cartController.ClearKeranjang(currentUser.Username);
+                    formDashboard.Show();
+                }
+            }
+            else
             {
                 formDashboard.Show();
             }
-            this.Close();
-        
+
+        }
+
+        private void btnBayarNanti_Click(object sender, EventArgs e)
+        {
+            if (ItemKeranjang.Count == 0)
+            {
+                MessageBox.Show("Keranjang belanja kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            double total = ItemKeranjang.Sum(item => item.SubTotal);
+            var result = MessageBox.Show($"Checkout dengan total Rp{total:N0}?",
+                "Konfirmasi Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    bool simpanTransaksi = cartController.SimpanTransaksi(currentUser.Username, ItemKeranjang, false);
+                    if (!simpanTransaksi)
+                    {
+                        MessageBox.Show("Gagal menyimpan transaksi!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    foreach (var item in ItemKeranjang)
+                    {
+                        bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
+
+                        if (!stockUpdated)
+                        {
+                            MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return; // Batalkan checkout jika ada yang gagal
+                        }
+                    }
+
+                    if (cartController.ClearKeranjang(currentUser.Username))
+                    {
+                        MessageBox.Show("Checkout berhasil dilakukan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        if (formDashboard != null)
+                        {
+                            formDashboard.Show();
+                            formDashboard.LoadProducts(); // ✅ REFRESH DATA PRODUK DI DASHBOARD
+                        }
+                        this.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error saat checkout: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnPembayaran_Click(object sender, EventArgs e)
+        {
+            V_Pembayaran formPembayaran = new V_Pembayaran(currentUser);
+            formPembayaran.Show();
+            this.Hide();
         }
     }
 }

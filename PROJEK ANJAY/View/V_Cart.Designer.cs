@@ -36,6 +36,8 @@
             lblTotal = new Label();
             btnKembali = new Button();
             btnCheckout = new Button();
+            btnBayarNanti = new Button();
+            btnPembayaran = new Button();
             ((System.ComponentModel.ISupportInitialize)tblKeranjang).BeginInit();
             SuspendLayout();
             // 
@@ -44,10 +46,10 @@
             tblKeranjang.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tblKeranjang.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tblKeranjang.Columns.AddRange(new DataGridViewColumn[] { NamaProduk3, Harga3, Qty3, Subtotal });
-            tblKeranjang.Location = new Point(190, 161);
+            tblKeranjang.Location = new Point(320, 95);
             tblKeranjang.Name = "tblKeranjang";
             tblKeranjang.RowHeadersWidth = 62;
-            tblKeranjang.Size = new Size(578, 177);
+            tblKeranjang.Size = new Size(448, 306);
             tblKeranjang.TabIndex = 0;
             // 
             // NamaProduk3
@@ -84,9 +86,9 @@
             // 
             // btnKembali
             // 
-            btnKembali.Location = new Point(519, 378);
+            btnKembali.Location = new Point(82, 352);
             btnKembali.Name = "btnKembali";
-            btnKembali.Size = new Size(112, 34);
+            btnKembali.Size = new Size(124, 34);
             btnKembali.TabIndex = 2;
             btnKembali.Text = "Kembali";
             btnKembali.UseVisualStyleBackColor = true;
@@ -94,23 +96,48 @@
             // 
             // btnCheckout
             // 
-            btnCheckout.Location = new Point(656, 378);
+            btnCheckout.Location = new Point(542, 407);
             btnCheckout.Name = "btnCheckout";
-            btnCheckout.Size = new Size(112, 34);
+            btnCheckout.Size = new Size(226, 34);
             btnCheckout.TabIndex = 3;
-            btnCheckout.Text = "Checkout";
+            btnCheckout.Text = "Pesan dan Bayar Sekarang";
             btnCheckout.UseVisualStyleBackColor = true;
             btnCheckout.Click += btnCheckout_Click;
+            // 
+            // btnBayarNanti
+            // 
+            btnBayarNanti.Location = new Point(320, 407);
+            btnBayarNanti.Name = "btnBayarNanti";
+            btnBayarNanti.Size = new Size(216, 34);
+            btnBayarNanti.TabIndex = 4;
+            btnBayarNanti.Text = "Pesan dan Bayar Nanti";
+            btnBayarNanti.UseVisualStyleBackColor = true;
+            btnBayarNanti.Click += btnBayarNanti_Click;
+            // 
+            // btnPembayaran
+            // 
+            btnPembayaran.Location = new Point(43, 154);
+            btnPembayaran.Name = "btnPembayaran";
+            btnPembayaran.Size = new Size(173, 34);
+            btnPembayaran.TabIndex = 5;
+            btnPembayaran.Text = "Pembayaran";
+            btnPembayaran.UseVisualStyleBackColor = true;
+            btnPembayaran.Click += btnPembayaran_Click;
             // 
             // V_Cart
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.PRODUK_PELANGGAN__1_;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnPembayaran);
+            Controls.Add(btnBayarNanti);
             Controls.Add(btnCheckout);
             Controls.Add(btnKembali);
             Controls.Add(lblTotal);
             Controls.Add(tblKeranjang);
+            DoubleBuffered = true;
             Name = "V_Cart";
             Text = "V_Cart";
             ((System.ComponentModel.ISupportInitialize)tblKeranjang).EndInit();
@@ -128,5 +155,7 @@
         private Label lblTotal;
         private Button btnKembali;
         private Button btnCheckout;
+        private Button btnBayarNanti;
+        private Button btnPembayaran;
     }
 }
