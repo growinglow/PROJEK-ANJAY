@@ -1,16 +1,17 @@
 using PROJEK_ANJAY.Controllers;
 using PROJEK_ANJAY.Models;
 using PROJEK_ANJAY.View;
+using System.Drawing.Text;
 
 namespace PROJEK_ANJAY
 {
     public partial class V_FormLogin : Form
     {
-        private AuthController _authController;
+        private AuthController authController;
         public V_FormLogin()
         {
             InitializeComponent();
-            _authController = new AuthController();
+            authController = new AuthController();
 
         }
 
@@ -20,47 +21,71 @@ namespace PROJEK_ANJAY
             user.Username = tbUsername.Text;
             user.Password = tbPassword.Text;
 
+            if (ValidasiUser(user))
+            {
+                LoginkeAkun(user);
+            }
+        }
+
+        private bool ValidasiUser(User user)
+        {
             if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Password))
             {
                 MessageBox.Show("Username dan Password harus di isi", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return false;
             }
-
-            var auth = _authController.Login(user);
+            return true;
+        }
+        private void LoginkeAkun(User user)
+        {
+            var auth = authController.Login(user);
             if (auth)
             {
-                MessageBox.Show($"Login berhasil. Selamat datang {user.Username}", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                if (user.Username == "admin" && user.Password == "Admin#123")
-                {
-                    // buka form produk
-                    V_Products produk = new V_Products();
-                    produk.Show();
-                }
-                else
-                {
-                    // buka form dashboard
-                    V_FormDashboard dashboard = new V_FormDashboard(user);
-                    dashboard.Show();
-                }
-
+                MsgBerhasilLogin(user.Username);
+                NavigateToForm(user);
                 this.Hide();
             }
             else
             {
-                MessageBox.Show("Username atau Password salah. Silahkan periksa kredensial akun anda!!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Username atau Password salah", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void MsgBerhasilLogin(string username)
+        {
+            MessageBox.Show($"Login berhasil. Selamat datang {username}", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void NavigateToForm(User user)
+        {
+            Form nextForm = MasukKeFormProduk(user);
+            nextForm.Show();
+        }
+        private Form MasukKeFormProduk(User user)
+        {
+            if (IsAdmin(user))
+            {
+                return new V_Products();
+            }
+            else
+            {
+                return new V_FormDashboard(user);
             }
         }
 
-        private void tbUsername_TextChanged(object sender, EventArgs e)
+        private bool IsAdmin(User user)
         {
-
+            return user.Username == "admin" && user.Password == "Admin#123";
         }
+        private void tbUsername_TextChanged(object sender, EventArgs e)
+        {}
 
         private void V_FormLogin_Load(object sender, EventArgs e)
+        {}
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            V_FormRegister FormRegist = new V_FormRegister();
+            FormRegist.Show();
         }
-
     }
 }

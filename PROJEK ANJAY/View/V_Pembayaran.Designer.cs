@@ -45,10 +45,10 @@
             // 
             tblPembayaran.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tblPembayaran.Columns.AddRange(new DataGridViewColumn[] { TglTransaksi, Barang, TotalHarga, is_paid, BayarSkrg });
-            tblPembayaran.Location = new Point(237, 85);
+            tblPembayaran.Location = new Point(615, 218);
             tblPembayaran.Name = "tblPembayaran";
             tblPembayaran.RowHeadersWidth = 62;
-            tblPembayaran.Size = new Size(567, 305);
+            tblPembayaran.Size = new Size(831, 660);
             tblPembayaran.TabIndex = 0;
             tblPembayaran.CellContentClick += tblPembayaran_CellContentClick;
             // 
@@ -90,47 +90,62 @@
             // 
             // btnRiwayatTransaksi
             // 
-            btnRiwayatTransaksi.Location = new Point(46, 300);
+            btnRiwayatTransaksi.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRiwayatTransaksi.ForeColor = Color.FromArgb(0, 64, 0);
+            btnRiwayatTransaksi.Location = new Point(82, 445);
             btnRiwayatTransaksi.Name = "btnRiwayatTransaksi";
-            btnRiwayatTransaksi.Size = new Size(140, 34);
+            btnRiwayatTransaksi.Size = new Size(332, 61);
             btnRiwayatTransaksi.TabIndex = 1;
-            btnRiwayatTransaksi.Text = "Riwayat Transaksi";
+            btnRiwayatTransaksi.Text = "   Riwayat Transaksi";
+            btnRiwayatTransaksi.TextAlign = ContentAlignment.MiddleLeft;
             btnRiwayatTransaksi.UseVisualStyleBackColor = true;
             btnRiwayatTransaksi.Click += btnRiwayatTransaksi_Click;
             // 
             // btnProduk1
             // 
-            btnProduk1.Location = new Point(46, 164);
+            btnProduk1.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnProduk1.ForeColor = Color.FromArgb(0, 64, 0);
+            btnProduk1.Location = new Point(82, 249);
             btnProduk1.Name = "btnProduk1";
-            btnProduk1.Size = new Size(140, 34);
+            btnProduk1.Size = new Size(332, 65);
             btnProduk1.TabIndex = 2;
-            btnProduk1.Text = "Produk";
+            btnProduk1.Text = "   Produk";
+            btnProduk1.TextAlign = ContentAlignment.MiddleLeft;
             btnProduk1.UseVisualStyleBackColor = true;
+            btnProduk1.Click += btnProduk1_Click;
             // 
             // btnPembayaran
             // 
-            btnPembayaran.Location = new Point(46, 231);
+            btnPembayaran.BackColor = Color.FromArgb(0, 64, 0);
+            btnPembayaran.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPembayaran.ForeColor = Color.White;
+            btnPembayaran.Location = new Point(80, 344);
             btnPembayaran.Name = "btnPembayaran";
-            btnPembayaran.Size = new Size(140, 34);
+            btnPembayaran.Size = new Size(334, 65);
             btnPembayaran.TabIndex = 3;
-            btnPembayaran.Text = "Pembayaran";
-            btnPembayaran.UseVisualStyleBackColor = true;
+            btnPembayaran.Text = "   Pembayaran";
+            btnPembayaran.TextAlign = ContentAlignment.MiddleLeft;
+            btnPembayaran.UseVisualStyleBackColor = false;
             // 
             // btnLogout1
             // 
-            btnLogout1.Location = new Point(46, 404);
+            btnLogout1.BackColor = Color.FromArgb(0, 64, 0);
+            btnLogout1.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogout1.ForeColor = Color.White;
+            btnLogout1.Location = new Point(200, 874);
             btnLogout1.Name = "btnLogout1";
-            btnLogout1.Size = new Size(140, 34);
+            btnLogout1.Size = new Size(147, 68);
             btnLogout1.TabIndex = 4;
             btnLogout1.Text = "Logout";
-            btnLogout1.UseVisualStyleBackColor = true;
+            btnLogout1.UseVisualStyleBackColor = false;
             btnLogout1.Click += btnLogout1_Click;
             // 
             // V_Pembayaran
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackgroundImage = Properties.Resources.STATUS_TRANSAKSI_PELANGGAN__1_;
+            ClientSize = new Size(1490, 975);
             Controls.Add(btnLogout1);
             Controls.Add(btnPembayaran);
             Controls.Add(btnProduk1);

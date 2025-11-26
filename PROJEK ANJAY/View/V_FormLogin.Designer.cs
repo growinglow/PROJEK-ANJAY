@@ -31,14 +31,16 @@
             button1 = new Button();
             tbUsername = new TextBox();
             tbPassword = new TextBox();
+            label1 = new Label();
+            linkLabel1 = new LinkLabel();
             SuspendLayout();
             // 
             // button1
             // 
             button1.BackColor = Color.Lime;
-            button1.Location = new Point(406, 413);
+            button1.Location = new Point(863, 816);
             button1.Name = "button1";
-            button1.Size = new Size(112, 49);
+            button1.Size = new Size(157, 62);
             button1.TabIndex = 0;
             button1.Text = "LOGIN";
             button1.UseVisualStyleBackColor = false;
@@ -46,18 +48,44 @@
             // 
             // tbUsername
             // 
-            tbUsername.Location = new Point(351, 230);
+            tbUsername.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbUsername.Location = new Point(738, 454);
             tbUsername.Name = "tbUsername";
-            tbUsername.Size = new Size(201, 31);
+            tbUsername.Size = new Size(390, 45);
             tbUsername.TabIndex = 2;
             tbUsername.TextChanged += tbUsername_TextChanged;
             // 
             // tbPassword
             // 
-            tbPassword.Location = new Point(360, 308);
+            tbPassword.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbPassword.Location = new Point(749, 615);
             tbPassword.Name = "tbPassword";
-            tbPassword.Size = new Size(192, 31);
+            tbPassword.Size = new Size(369, 45);
             tbPassword.TabIndex = 4;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(1168, 18);
+            label1.Name = "label1";
+            label1.Size = new Size(219, 28);
+            label1.TabIndex = 5;
+            label1.Text = "Sudah memiliki akun?";
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.BackColor = Color.Transparent;
+            linkLabel1.LinkColor = Color.FromArgb(0, 64, 0);
+            linkLabel1.Location = new Point(1393, 21);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(75, 25);
+            linkLabel1.TabIndex = 6;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Register";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // V_FormLogin
             // 
@@ -66,7 +94,9 @@
             BackColor = Color.FromArgb(0, 64, 0);
             BackgroundImage = Properties.Resources.LOGIN;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(722, 480);
+            ClientSize = new Size(1490, 926);
+            Controls.Add(linkLabel1);
+            Controls.Add(label1);
             Controls.Add(tbPassword);
             Controls.Add(tbUsername);
             Controls.Add(button1);
@@ -83,5 +113,7 @@
         private Button button1;
         private TextBox tbUsername;
         private TextBox tbPassword;
+        private Label label1;
+        private LinkLabel linkLabel1;
     }
 }

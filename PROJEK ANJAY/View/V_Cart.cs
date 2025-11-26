@@ -91,18 +91,18 @@ namespace PROJEK_ANJAY.View
                         if (!stockUpdated)
                         {
                             MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok mungkin tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return; // Batalkan checkout jika ada yang gagal
+                            return;
                         }
                     }
 
                     if (cartController.ClearKeranjang(currentUser.Username))
                     {
-                        MessageBox.Show("Checkout berhasil dilakukan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Checkout berhasil dilakukan! Segera lakukan pembayaran agar pesananmu dapat segera kami kirim", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         if (formDashboard != null)
                         {
                             formDashboard.Show();
-                            formDashboard.LoadProducts(); // ✅ REFRESH DATA PRODUK DI DASHBOARD
+                            formDashboard.LoadProducts();
                         }
                         this.Close();
                     }
@@ -142,7 +142,7 @@ namespace PROJEK_ANJAY.View
             }
 
             double total = ItemKeranjang.Sum(item => item.SubTotal);
-            var result = MessageBox.Show($"Checkout dengan total Rp{total:N0}?",
+            var result = MessageBox.Show($"Buat pesanan dengan total Rp{total:N0}?",
                 "Konfirmasi Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -162,18 +162,18 @@ namespace PROJEK_ANJAY.View
                         if (!stockUpdated)
                         {
                             MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return; // Batalkan checkout jika ada yang gagal
+                            return;
                         }
                     }
 
                     if (cartController.ClearKeranjang(currentUser.Username))
                     {
-                        MessageBox.Show("Checkout berhasil dilakukan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Pesanan berhasil dibuat!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         if (formDashboard != null)
                         {
                             formDashboard.Show();
-                            formDashboard.LoadProducts(); // ✅ REFRESH DATA PRODUK DI DASHBOARD
+                            formDashboard.LoadProducts();
                         }
                         this.Close();
                     }
@@ -190,6 +190,22 @@ namespace PROJEK_ANJAY.View
             V_Pembayaran formPembayaran = new V_Pembayaran(currentUser);
             formPembayaran.Show();
             this.Hide();
+        }
+
+        private void tblKeranjang_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Yakin ingin logout?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                V_FormLogin loginForm = new V_FormLogin();
+                loginForm.Show();
+                this.Close();
+            }
         }
     }
 }

@@ -40,6 +40,9 @@
             lblWelcome = new Label();
             LihatKeranjang = new Button();
             btnPembayaran = new Button();
+            button1 = new Button();
+            button2 = new Button();
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)tblDashbord).BeginInit();
             SuspendLayout();
             // 
@@ -48,10 +51,10 @@
             tblDashbord.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tblDashbord.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             tblDashbord.Columns.AddRange(new DataGridViewColumn[] { NamaProduk2, Deskripsi2, Harga2, Stok2, TambahQ, Qty, Kurangiplis, AddToCart });
-            tblDashbord.Location = new Point(436, 99);
+            tblDashbord.Location = new Point(604, 196);
             tblDashbord.Name = "tblDashbord";
             tblDashbord.RowHeadersWidth = 62;
-            tblDashbord.Size = new Size(669, 416);
+            tblDashbord.Size = new Size(813, 631);
             tblDashbord.TabIndex = 0;
             tblDashbord.CellContentClick += tblDashbord_CellContentClick;
             // 
@@ -123,9 +126,11 @@
             // 
             // LihatKeranjang
             // 
-            LihatKeranjang.Location = new Point(458, 516);
+            LihatKeranjang.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LihatKeranjang.ForeColor = Color.FromArgb(0, 64, 0);
+            LihatKeranjang.Location = new Point(1127, 843);
             LihatKeranjang.Name = "LihatKeranjang";
-            LihatKeranjang.Size = new Size(151, 34);
+            LihatKeranjang.Size = new Size(290, 54);
             LihatKeranjang.TabIndex = 2;
             LihatKeranjang.Text = "Lihat Keranjang";
             LihatKeranjang.UseVisualStyleBackColor = true;
@@ -135,14 +140,56 @@
             // 
             btnPembayaran.BackColor = Color.Transparent;
             btnPembayaran.FlatStyle = FlatStyle.Flat;
-            btnPembayaran.Font = new Font("Segoe UI Black", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPembayaran.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPembayaran.ForeColor = Color.FromArgb(0, 64, 64);
-            btnPembayaran.Location = new Point(61, 189);
+            btnPembayaran.Location = new Point(80, 320);
             btnPembayaran.Name = "btnPembayaran";
-            btnPembayaran.Size = new Size(242, 49);
+            btnPembayaran.Size = new Size(328, 62);
             btnPembayaran.TabIndex = 3;
-            btnPembayaran.Text = "Pembayaran";
+            btnPembayaran.Text = "   Pembayaran";
+            btnPembayaran.TextAlign = ContentAlignment.MiddleLeft;
             btnPembayaran.UseVisualStyleBackColor = false;
+            btnPembayaran.Click += btnPembayaran_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.White;
+            button1.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.ForeColor = Color.FromArgb(0, 64, 0);
+            button1.ImageAlign = ContentAlignment.MiddleLeft;
+            button1.Location = new Point(78, 415);
+            button1.Name = "button1";
+            button1.Size = new Size(328, 59);
+            button1.TabIndex = 4;
+            button1.Text = "   Riwayat Transaksi";
+            button1.TextAlign = ContentAlignment.MiddleLeft;
+            button1.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(0, 64, 0);
+            button2.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(196, 819);
+            button2.Name = "button2";
+            button2.Size = new Size(145, 59);
+            button2.TabIndex = 5;
+            button2.Text = "Logout";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.FromArgb(0, 64, 0);
+            button3.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(78, 232);
+            button3.Name = "button3";
+            button3.Size = new Size(328, 57);
+            button3.TabIndex = 6;
+            button3.Text = "   Produk";
+            button3.TextAlign = ContentAlignment.MiddleLeft;
+            button3.UseVisualStyleBackColor = false;
             // 
             // V_FormDashboard
             // 
@@ -150,7 +197,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.PRODUK_PELANGGAN;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(1117, 574);
+            ClientSize = new Size(1490, 926);
+            Controls.Add(button3);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Controls.Add(btnPembayaran);
             Controls.Add(LihatKeranjang);
             Controls.Add(lblWelcome);
@@ -177,5 +227,8 @@
         private DataGridViewButtonColumn Kurangiplis;
         private DataGridViewButtonColumn AddToCart;
         private Button btnPembayaran;
+        private Button button1;
+        private Button button2;
+        private Button button3;
     }
 }

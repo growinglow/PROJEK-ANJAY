@@ -37,7 +37,6 @@ namespace PROJEK_ANJAY
                 MessageBox.Show("Produk gagal ditambahkan", "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -82,6 +81,17 @@ namespace PROJEK_ANJAY
             //{
             //    object=
             //}
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Yakin ingin logout?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                V_FormLogin loginForm = new V_FormLogin();
+                loginForm.Show();
+                this.Close();
+            }
         }
     }
 }

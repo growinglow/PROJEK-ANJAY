@@ -14,11 +14,11 @@ namespace PROJEK_ANJAY
 {
     public partial class V_FormRegister : Form
     {
-        private AuthController _authController;
+        private AuthController authController;
         public V_FormRegister()
         {
             InitializeComponent();
-            _authController = new AuthController();
+            authController = new AuthController();
         }
 
         private void V_FormRegister_Load(object sender, EventArgs e)
@@ -28,7 +28,7 @@ namespace PROJEK_ANJAY
 
         private void loginLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            _authController.showFormLogin(this);
+            authController.showFormLogin(this);
         }
 
         private void btnSignUp_Click(object sender, EventArgs e)
@@ -44,12 +44,12 @@ namespace PROJEK_ANJAY
                 MessageBox.Show("Semua data harap diisi", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var auth = _authController.Register(user);
+            var auth = authController.Register(user);
 
             if (auth)
             {
                 MessageBox.Show("Registrasi Berhasil. Silahkan Login dengan akun anda.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _authController.showFormLogin(this);
+                authController.showFormLogin(this);
             }
             else
             {

@@ -58,7 +58,7 @@ namespace PROJEK_ANJAY.View
             if (transaksi != null)
             {
                 int transaksiId = transaksi.Id;
-                string total = transaksi.TotalFormatted; 
+                string total = transaksi.TotalFormatted;
 
                 var hasil = MessageBox.Show($"Bayar transaksi dengan total {total}?", "Konfirmasi Pembayaran", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -85,11 +85,11 @@ namespace PROJEK_ANJAY.View
         }
         private void btnRiwayatTransaksi_Click(object sender, EventArgs e)
         {
-            string username = currentUser.Username;
+            //string username = currentUser.Username;
 
-            var formRiwayat = new V_RiwayatTransaksi(username);
-            formRiwayat.Show();
-            this.Close();
+            //var formRiwayat = new V_RiwayatTransaksi(username);
+            //formRiwayat.Show();
+            //this.Close();
         }
 
         private void V_Pembayaran_Load(object sender, EventArgs e)
@@ -106,8 +106,15 @@ namespace PROJEK_ANJAY.View
             {
                 V_FormLogin formLogin = new V_FormLogin();
                 formLogin.Show();
-                this.Close(); // atau this.Close() tergantung kebutuhan
+                this.Close();
             }
+        }
+
+        private void btnProduk1_Click(object sender, EventArgs e)
+        {
+            V_Products formProducts = new V_Products();
+            formProducts.Show();
+            this.Close(); 
         }
     }
 }

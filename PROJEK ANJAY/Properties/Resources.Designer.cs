@@ -73,6 +73,36 @@ namespace PROJEK_ANJAY.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PRODUK_ADMIN {
+            get {
+                object obj = ResourceManager.GetObject("PRODUK ADMIN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PRODUK_ADMIN__1_ {
+            get {
+                object obj = ResourceManager.GetObject("PRODUK ADMIN (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PRODUK_ADMIN__1_1 {
+            get {
+                object obj = ResourceManager.GetObject("PRODUK ADMIN (1)1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PRODUK_PELANGGAN {
             get {
                 object obj = ResourceManager.GetObject("PRODUK PELANGGAN", resourceCulture);
@@ -86,6 +116,16 @@ namespace PROJEK_ANJAY.Properties {
         internal static System.Drawing.Bitmap PRODUK_PELANGGAN__1_ {
             get {
                 object obj = ResourceManager.GetObject("PRODUK PELANGGAN (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PRODUK_PELANGGAN__2_ {
+            get {
+                object obj = ResourceManager.GetObject("PRODUK PELANGGAN (2)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,6 +156,16 @@ namespace PROJEK_ANJAY.Properties {
         internal static System.Drawing.Bitmap RIWAYAT_TRANSAKSI_PELANGGAN {
             get {
                 object obj = ResourceManager.GetObject("RIWAYAT TRANSAKSI PELANGGAN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap STATUS_TRANSAKSI_PELANGGAN__1_ {
+            get {
+                object obj = ResourceManager.GetObject("STATUS TRANSAKSI PELANGGAN (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

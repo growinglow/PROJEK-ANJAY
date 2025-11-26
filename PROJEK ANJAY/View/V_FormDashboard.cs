@@ -110,9 +110,29 @@ namespace PROJEK_ANJAY.View
         {
             V_Cart FormKeranjang = new V_Cart(currentUser, this);
             FormKeranjang.Show();
-            this.Hide();    
+            this.Hide();
 
             LoadProducts();
+        }
+
+        private void btnPembayaran_Click(object sender, EventArgs e)
+        {
+            V_Pembayaran formPembayaran = new V_Pembayaran(currentUser);
+            formPembayaran.Show();
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Yakin ingin logout?", "Konfirmasi",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                V_FormLogin formLogin = new V_FormLogin();
+                formLogin.Show();
+                this.Close();
+            }
         }
     }
 }
