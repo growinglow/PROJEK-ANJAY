@@ -92,9 +92,9 @@
             // 
             btnRiwayatTransaksi.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnRiwayatTransaksi.ForeColor = Color.FromArgb(0, 64, 0);
-            btnRiwayatTransaksi.Location = new Point(82, 445);
+            btnRiwayatTransaksi.Location = new Point(82, 441);
             btnRiwayatTransaksi.Name = "btnRiwayatTransaksi";
-            btnRiwayatTransaksi.Size = new Size(332, 61);
+            btnRiwayatTransaksi.Size = new Size(332, 65);
             btnRiwayatTransaksi.TabIndex = 1;
             btnRiwayatTransaksi.Text = "   Riwayat Transaksi";
             btnRiwayatTransaksi.TextAlign = ContentAlignment.MiddleLeft;

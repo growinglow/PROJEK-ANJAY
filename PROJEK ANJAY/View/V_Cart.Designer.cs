@@ -36,7 +36,6 @@
             lblTotal = new Label();
             btnKembali = new Button();
             btnCheckout = new Button();
-            btnBayarNanti = new Button();
             btnPembayaran = new Button();
             button1 = new Button();
             button2 = new Button();
@@ -105,25 +104,13 @@
             // 
             btnCheckout.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCheckout.ForeColor = Color.FromArgb(0, 64, 0);
-            btnCheckout.Location = new Point(995, 829);
+            btnCheckout.Location = new Point(1195, 829);
             btnCheckout.Name = "btnCheckout";
-            btnCheckout.Size = new Size(425, 54);
+            btnCheckout.Size = new Size(225, 54);
             btnCheckout.TabIndex = 3;
-            btnCheckout.Text = "Pesan dan Bayar Sekarang";
+            btnCheckout.Text = "Buat Pesanan";
             btnCheckout.UseVisualStyleBackColor = true;
             btnCheckout.Click += btnCheckout_Click;
-            // 
-            // btnBayarNanti
-            // 
-            btnBayarNanti.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnBayarNanti.ForeColor = Color.FromArgb(0, 64, 0);
-            btnBayarNanti.Location = new Point(604, 829);
-            btnBayarNanti.Name = "btnBayarNanti";
-            btnBayarNanti.Size = new Size(370, 54);
-            btnBayarNanti.TabIndex = 4;
-            btnBayarNanti.Text = "Pesan dan Bayar Nanti";
-            btnBayarNanti.UseVisualStyleBackColor = true;
-            btnBayarNanti.Click += btnBayarNanti_Click;
             // 
             // btnPembayaran
             // 
@@ -162,6 +149,7 @@
             button2.TabIndex = 7;
             button2.Text = "Riwayat Transaksi";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -188,7 +176,6 @@
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(btnPembayaran);
-            Controls.Add(btnBayarNanti);
             Controls.Add(btnCheckout);
             Controls.Add(btnKembali);
             Controls.Add(lblTotal);
@@ -211,7 +198,6 @@
         private Label lblTotal;
         private Button btnKembali;
         private Button btnCheckout;
-        private Button btnBayarNanti;
         private Button btnPembayaran;
         private Button button1;
         private Button button2;

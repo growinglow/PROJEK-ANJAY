@@ -8,39 +8,39 @@ namespace PROJEK_ANJAY.Models
 {
     public class User
     {
-        private int _id;
-        private string _username;
-        private string _password;
-        private string _email;
-        private string _notelp;
+        private int id; 
+        private string username;
+        private string password;
+        private string email;
+        private string notelp;
 
-        public int Id
+        public int Id 
         {
-            get { return _id; }
-            set { _id = value; }
+            get { return id; }
+            set { id = value; }
         }
 
         public string Username
         {
-            get { return _username; }
-            set { _username = value; }
+            get { return username; }
+            set { username = value; }
         }
 
         public string Password
         {
-            get { return _password; }
-            set { _password = value; }
+            get { return password; }
+            set { password = value; }
         }
         public string Email
         {
-            get { return _email; }
-            set { _email = value; }
+            get { return email; }
+            set { email = value; }
         }
 
         public string Notelp
         {
-            get { return _notelp; }
-            set { _notelp = value; }
+            get { return notelp; }
+            set { notelp = value; }
         }
     }
 }

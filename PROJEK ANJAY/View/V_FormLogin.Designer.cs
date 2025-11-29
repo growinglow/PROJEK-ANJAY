@@ -70,9 +70,9 @@
             label1.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(1168, 18);
             label1.Name = "label1";
-            label1.Size = new Size(219, 28);
+            label1.Size = new Size(221, 28);
             label1.TabIndex = 5;
-            label1.Text = "Sudah memiliki akun?";
+            label1.Text = "Belum memiliki akun?";
             // 
             // linkLabel1
             // 

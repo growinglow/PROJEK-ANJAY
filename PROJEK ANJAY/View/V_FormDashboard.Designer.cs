@@ -64,6 +64,7 @@
             NamaProduk2.HeaderText = "Nama Produk";
             NamaProduk2.MinimumWidth = 8;
             NamaProduk2.Name = "NamaProduk2";
+            NamaProduk2.ReadOnly = true;
             // 
             // Deskripsi2
             // 
@@ -71,6 +72,7 @@
             Deskripsi2.HeaderText = "Deskripsi";
             Deskripsi2.MinimumWidth = 8;
             Deskripsi2.Name = "Deskripsi2";
+            Deskripsi2.ReadOnly = true;
             // 
             // Harga2
             // 
@@ -78,6 +80,7 @@
             Harga2.HeaderText = "Harga";
             Harga2.MinimumWidth = 8;
             Harga2.Name = "Harga2";
+            Harga2.ReadOnly = true;
             // 
             // Stok2
             // 
@@ -85,6 +88,7 @@
             Stok2.HeaderText = "Stok";
             Stok2.MinimumWidth = 8;
             Stok2.Name = "Stok2";
+            Stok2.ReadOnly = true;
             // 
             // TambahQ
             // 
@@ -99,6 +103,7 @@
             Qty.HeaderText = "Quantity";
             Qty.MinimumWidth = 8;
             Qty.Name = "Qty";
+            Qty.ReadOnly = true;
             // 
             // Kurangiplis
             // 
@@ -164,6 +169,7 @@
             button1.Text = "   Riwayat Transaksi";
             button1.TextAlign = ContentAlignment.MiddleLeft;
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -218,6 +224,10 @@
         private DataGridView tblDashbord;
         private Label lblWelcome;
         private Button LihatKeranjang;
+        private Button btnPembayaran;
+        private Button button1;
+        private Button button2;
+        private Button button3;
         private DataGridViewTextBoxColumn NamaProduk2;
         private DataGridViewTextBoxColumn Deskripsi2;
         private DataGridViewTextBoxColumn Harga2;
@@ -226,9 +236,5 @@
         private DataGridViewTextBoxColumn Qty;
         private DataGridViewButtonColumn Kurangiplis;
         private DataGridViewButtonColumn AddToCart;
-        private Button btnPembayaran;
-        private Button button1;
-        private Button button2;
-        private Button button3;
     }
 }

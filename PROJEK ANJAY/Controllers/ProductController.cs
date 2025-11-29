@@ -11,10 +11,10 @@ namespace PROJEK_ANJAY.Controllers
 {
     public class ProductController
     {
-        private DbContext Context;
+        private DbContext Context; 
         public ProductController()
         {
-            Context = new DbContext();
+            Context = new DbContext(); 
         }
         public List<M_Products> Products()
         {
@@ -22,13 +22,12 @@ namespace PROJEK_ANJAY.Controllers
             using (var conn = new NpgsqlConnection(Context.connStr))
             {
                 conn.Open();
-                string query = "SELECT * FROM products ORDER BY id ASC";
-
-                using (var conn2 = new NpgsqlCommand(query, conn))
-                {
-                    using (var reader = conn2.ExecuteReader())
+                string query = "SELECT id, nama_produk, deskripsi, harga, stok, is_active FROM products WHERE is_active = true ORDER BY id ASC";
+                using (var cmd = new NpgsqlCommand(query, conn))
+                { 
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while (reader.Read()) 
                         {
                             products.Add(new M_Products
                             {
@@ -37,6 +36,7 @@ namespace PROJEK_ANJAY.Controllers
                                 Deskripsi = reader.GetString(2),
                                 Harga = reader.GetInt32(3),
                                 Stok = reader.GetInt32(4),
+                                IsActive = reader.GetBoolean(5)
                             });
                         }
                     }
@@ -48,9 +48,8 @@ namespace PROJEK_ANJAY.Controllers
         {
             using (var conn = new NpgsqlConnection(Context.connStr))
             {
-                conn.Open();
-                string query = "INSERT INTO products (nama_produk, deskripsi, harga, stok) VALUES (@nama_produk, @deskripsi, @harga, @stok)";
-
+                conn.Open(); 
+                string query = "INSERT INTO products (nama_produk, deskripsi, harga, stok) VALUES (@nama_produk, @deskripsi, @harga, @stok)"; // nah yang ada @ itu placeholder, kyk tempat kosong
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@nama_produk", products.NamaProduk);
@@ -59,35 +58,49 @@ namespace PROJEK_ANJAY.Controllers
                     cmd.Parameters.AddWithValue("@stok", products.Stok);
 
                     int var = cmd.ExecuteNonQuery();
-                    if (var > 0)
+                    if (var > 0) 
                     {
                         return true;
                     }
                     else
                     {
-                        return false;
+                        return false; 
                     }
                 }
             }
         }
         public bool Delete(int id)
         {
+            DialogResult result = MessageBox.Show(
+                "Yakin ingin menon-aktifkan produk ini?",
+                "Konfirmasi",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result != DialogResult.Yes)
+            {
+                return false;
+            }
+
             using (var conn = new NpgsqlConnection(Context.connStr))
             {
                 conn.Open();
-                string query = "DELETE FROM products WHERE id = @Id";
 
-                using (var conn2 = new NpgsqlCommand(query, conn))
+                string query = "UPDATE products SET is_active = false WHERE id = @Id"; 
+                using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    conn2.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@Id", id); 
+                    int rowsAffected = cmd.ExecuteNonQuery(); 
 
-                    int var = conn2.ExecuteNonQuery();
-                    if (var > 0)
+                    if (rowsAffected > 0)
                     {
+                        MessageBox.Show("Produk berhasil di non-aktifkan");
                         return true;
                     }
                     else
                     {
+                        MessageBox.Show("Produk tidak ditemukan");
                         return false;
                     }
                 }
@@ -99,10 +112,9 @@ namespace PROJEK_ANJAY.Controllers
             {
                 conn.Open();
                 string query = "UPDATE products SET nama_produk = @nama_produk, deskripsi = @deskripsi, harga = @harga, stok = @stok WHERE id = @Id";
-
                 using (var conn2 = new NpgsqlCommand(query, conn))
                 {
-                    conn2.Parameters.AddWithValue("@nama_Produk", products.NamaProduk);
+                    conn2.Parameters.AddWithValue("@nama_Produk", products.NamaProduk); 
                     conn2.Parameters.AddWithValue("@deskripsi", products.Deskripsi);
                     conn2.Parameters.AddWithValue("@harga", products.Harga);
                     conn2.Parameters.AddWithValue("@stok", products.Stok);

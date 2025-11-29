@@ -1,5 +1,6 @@
 ﻿using PROJEK_ANJAY.Controllers;
 using PROJEK_ANJAY.Models;
+using PROJEK_ANJAY.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,13 +15,14 @@ namespace PROJEK_ANJAY
 {
     public partial class V_Products : Form
     {
-        private ProductController productController;
-        private M_Products M_Products = new M_Products();
+        private ProductController productController; 
+        private M_Products M_Products = new M_Products(); 
         public V_Products()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             dataGridView1.AutoGenerateColumns = false;
-            productController = new ProductController();
+            productController = new ProductController(); 
+            RefreshData(); 
         }
 
         private void btnTambahProduk_Click(object sender, EventArgs e)
@@ -43,14 +45,21 @@ namespace PROJEK_ANJAY
         }
         private void RefreshData()
         {
-            List<M_Products> DaftarProduk = productController.Products();
 
-            dataGridView1.DataSource = productController.Products();
+            try 
+            {
+                var products = productController.Products();
+                dataGridView1.DataSource = products;
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show($"Error refresh data: {ex.Message}");
+            }
         }
 
         private void V_Products_Load(object sender, EventArgs e)
         {
-            RefreshData();
+            RefreshData(); //
         }
 
         private void V_Products_Load_1(object sender, EventArgs e)
@@ -61,16 +70,15 @@ namespace PROJEK_ANJAY
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
             string btnItem = dataGridView1.Columns[e.ColumnIndex].Name;
-            M_Products selectedProduct = (M_Products)dataGridView1.Rows[e.RowIndex].DataBoundItem;
-            M_Products = selectedProduct;
-            if (btnItem == "Edit")
+            M_Products selectedProduct = (M_Products)dataGridView1.Rows[e.RowIndex].DataBoundItem; 
+            M_Products = selectedProduct; 
+            if (btnItem == "Edit") 
             {
-                V_CreateEditProduk v_CreateEditProduk = new V_CreateEditProduk(M_Products);
+                V_CreateEditProduk v_CreateEditProduk = new V_CreateEditProduk(M_Products); 
                 v_CreateEditProduk.ShowDialog();
                 RefreshData();
-                //MessageBox.Show("Anda klik edit", "gagal", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else if (btnItem == "Delete")
+            else if (btnItem == "Delete") 
             {
                 productController.Delete(selectedProduct.Id);
                 RefreshData();
@@ -92,6 +100,27 @@ namespace PROJEK_ANJAY
                 loginForm.Show();
                 this.Close();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            V_RiwayatTransaksiAdm riwayatTransaksiAdm = new V_RiwayatTransaksiAdm(new User { Username = "admin" });
+            riwayatTransaksiAdm.Show();
+            this.Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            V_Products v_Products = new V_Products();
+            v_Products.Show();
+            this.Hide();
+        }
+
+        private void btnLapPenjualan_Click(object sender, EventArgs e)
+        {
+            V_laporanPembayaran v_LaporanPembayaran = new V_laporanPembayaran();
+            v_LaporanPembayaran.Show();
+            this.Close();
         }
     }
 }

@@ -63,6 +63,16 @@ namespace PROJEK_ANJAY.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap LAPORAN_PENJUALAN_ADMIN__1_ {
+            get {
+                object obj = ResourceManager.GetObject("LAPORAN PENJUALAN ADMIN (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LOGIN {
             get {
                 object obj = ResourceManager.GetObject("LOGIN", resourceCulture);
@@ -146,6 +156,16 @@ namespace PROJEK_ANJAY.Properties {
         internal static System.Drawing.Bitmap REGISTER1 {
             get {
                 object obj = ResourceManager.GetObject("REGISTER1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RIWAYAT_TRANSAKSI_ADMIN__1_ {
+            get {
+                object obj = ResourceManager.GetObject("RIWAYAT TRANSAKSI ADMIN (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

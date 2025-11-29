@@ -50,7 +50,6 @@ namespace PROJEK_ANJAY.Controllers
             {
                 conn.Open();
 
-                // 1. Cek apakah username sudah ada
                 string checkQuery = "SELECT COUNT(*) FROM users WHERE username = @username";
                 using (var cmd = new NpgsqlCommand(checkQuery, conn))
                 {
@@ -59,12 +58,10 @@ namespace PROJEK_ANJAY.Controllers
 
                     if (count > 0)
                     {
-                        // Username sudah terdaftar
                         return false;
                     }
                 }
 
-                // 2. Jika belum ada, insert user baru
                 string insertQuery = "INSERT INTO users (username, password, email, notelp) VALUES (@username, @password, @email, @notelp)";
                 using (var cmd = new NpgsqlCommand(insertQuery, conn))
                 {

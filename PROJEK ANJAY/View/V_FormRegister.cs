@@ -28,7 +28,7 @@ namespace PROJEK_ANJAY
 
         private void loginLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            authController.showFormLogin(this);
+            authController.showFormLogin(this); 
         }
 
         private void btnSignUp_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace PROJEK_ANJAY
                 MessageBox.Show("Semua data harap diisi", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var auth = authController.Register(user);
+            var auth = authController.Register(user); 
 
             if (auth)
             {

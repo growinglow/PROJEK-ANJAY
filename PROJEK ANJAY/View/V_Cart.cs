@@ -71,33 +71,32 @@ namespace PROJEK_ANJAY.View
             }
 
             double total = ItemKeranjang.Sum(item => item.SubTotal);
-            var result = MessageBox.Show($"Checkout dengan total Rp{total:N0}?",
-                "Konfirmasi Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show($"Buat Pesanan dengan total Rp{total:N0}?",  "Konfirmasi Pesanan" , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
                 try
                 {
-                    bool simpanTransaksi = cartController.SimpanTransaksi(currentUser.Username, ItemKeranjang, true);
+                    bool simpanTransaksi = cartController.SimpanTransaksi(currentUser.Username, ItemKeranjang, false);
                     if (!simpanTransaksi)
                     {
                         MessageBox.Show("Gagal menyimpan transaksi!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    foreach (var item in ItemKeranjang)
-                    {
-                        bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
+                    //foreach (var item in ItemKeranjang)
+                    //{
+                    //    bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
 
-                        if (!stockUpdated)
-                        {
-                            MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok mungkin tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
+                    //    if (!stockUpdated)
+                    //    {
+                    //        MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok mungkin tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //        return;
+                    //    }
+                    //}
 
                     if (cartController.ClearKeranjang(currentUser.Username))
                     {
-                        MessageBox.Show("Checkout berhasil dilakukan! Segera lakukan pembayaran agar pesananmu dapat segera kami kirim", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Pesanan berhasil dibuat. Segera lakukan pembayaran agar pesananmu dapat segera kami kirim", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         if (formDashboard != null)
                         {
@@ -109,7 +108,7 @@ namespace PROJEK_ANJAY.View
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error during checkout: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error saat checkout: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -130,59 +129,58 @@ namespace PROJEK_ANJAY.View
             {
                 formDashboard.Show();
             }
-
         }
 
         private void btnBayarNanti_Click(object sender, EventArgs e)
         {
-            if (ItemKeranjang.Count == 0)
-            {
-                MessageBox.Show("Keranjang belanja kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            //if (ItemKeranjang.Count == 0)
+            //{
+            //    MessageBox.Show("Keranjang belanja kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
-            double total = ItemKeranjang.Sum(item => item.SubTotal);
-            var result = MessageBox.Show($"Buat pesanan dengan total Rp{total:N0}?",
-                "Konfirmasi Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //double total = ItemKeranjang.Sum(item => item.SubTotal);
+            //var result = MessageBox.Show($"Buat pesanan dengan total Rp{total:N0}?",
+            //    "Konfirmasi Checkout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                try
-                {
-                    bool simpanTransaksi = cartController.SimpanTransaksi(currentUser.Username, ItemKeranjang, false);
-                    if (!simpanTransaksi)
-                    {
-                        MessageBox.Show("Gagal menyimpan transaksi!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    foreach (var item in ItemKeranjang)
-                    {
-                        bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
+            //if (result == DialogResult.Yes)
+            //{
+            //    try
+            //    {
+            //        bool simpanTransaksi = cartController.SimpanTransaksi(currentUser.Username, ItemKeranjang, false);
+            //        if (!simpanTransaksi)
+            //        {
+            //            MessageBox.Show("Gagal menyimpan transaksi!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //            return;
+            //        }
+            //        foreach (var item in ItemKeranjang)
+            //        {
+            //            bool stockUpdated = cartController.UpdateStokProduk(item.ProductId, item.Quantity);
 
-                        if (!stockUpdated)
-                        {
-                            MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
+            //            if (!stockUpdated)
+            //            {
+            //                MessageBox.Show($"Gagal update stok untuk {item.NamaProduk}. Stok tidak cukup!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //                return;
+            //            }
+            //        }
 
-                    if (cartController.ClearKeranjang(currentUser.Username))
-                    {
-                        MessageBox.Show("Pesanan berhasil dibuat!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //        if (cartController.ClearKeranjang(currentUser.Username))
+            //        {
+            //            MessageBox.Show("Pesanan berhasil dibuat!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        if (formDashboard != null)
-                        {
-                            formDashboard.Show();
-                            formDashboard.LoadProducts();
-                        }
-                        this.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error saat checkout: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            //            if (formDashboard != null)
+            //            {
+            //                formDashboard.Show();
+            //                formDashboard.LoadProducts();
+            //            }
+            //            this.Close();
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show($"Error saat checkout: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //}
         }
 
         private void btnPembayaran_Click(object sender, EventArgs e)
@@ -206,6 +204,11 @@ namespace PROJEK_ANJAY.View
                 loginForm.Show();
                 this.Close();
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

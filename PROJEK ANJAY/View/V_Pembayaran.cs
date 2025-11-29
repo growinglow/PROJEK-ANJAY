@@ -60,16 +60,36 @@ namespace PROJEK_ANJAY.View
                 int transaksiId = transaksi.Id;
                 string total = transaksi.TotalFormatted;
 
-                var hasil = MessageBox.Show($"Bayar transaksi dengan total {total}?", "Konfirmasi Pembayaran", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                string vaNumber = "8881234567890"; //stati
+                string bankName = "BANK SILONTAR";
 
-                if (hasil == DialogResult.Yes)
+                var konfirmasi = MessageBox.Show(
+                    $"Bayar transaksi dengan total {total}?\n\n" +
+                    $"Silakan transfer ke:\n" +
+                    $"Bank: {bankName}\n" +
+                    $"VA Number: {vaNumber}\n\n" +
+                    $"Setelah transfer, status akan otomatis berubah menjadi SUDAH BAYAR.",
+                    "Konfirmasi Pembayaran",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information
+                );
+
+                if (konfirmasi == DialogResult.Yes)
                 {
                     try
                     {
                         bool berhasil = payController.BayarSekarang(transaksiId);
                         if (berhasil)
                         {
-                            MessageBox.Show("Pembayaran berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show(
+                                "Pembayaran berhasil!\n\n" +
+                                "Terima kasih telah melakukan pembayaran. " +
+                                "Pesanan Anda akan segera diproses setelah pembayaran dikonfirmasi.",
+                                "Sukses",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                            );
+                            LoadData(); // Refresh data
                         }
                         else
                         {
@@ -85,11 +105,9 @@ namespace PROJEK_ANJAY.View
         }
         private void btnRiwayatTransaksi_Click(object sender, EventArgs e)
         {
-            //string username = currentUser.Username;
-
-            //var formRiwayat = new V_RiwayatTransaksi(username);
-            //formRiwayat.Show();
-            //this.Close();
+            V_RiwayatTransaksiPlggn v_RiwayatTransaksiPlggn = new V_RiwayatTransaksiPlggn(currentUser);
+            v_RiwayatTransaksiPlggn.Show();
+            this.Close();
         }
 
         private void V_Pembayaran_Load(object sender, EventArgs e)
@@ -112,8 +130,8 @@ namespace PROJEK_ANJAY.View
 
         private void btnProduk1_Click(object sender, EventArgs e)
         {
-            V_Products formProducts = new V_Products();
-            formProducts.Show();
+            V_FormDashboard formDashboard = new V_FormDashboard(currentUser);
+            formDashboard.Show();
             this.Close(); 
         }
     }
