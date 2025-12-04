@@ -156,37 +156,39 @@ namespace PROJEK_ANJAY.Controllers
         //        }
         //    }
         //}
-        public bool SimpanTransaksi(string username, List<M_Keranjang> cartItems, bool isPaid) // ini buat nyimpen data transaksi ke tabel transaksi dan detailtransaksi
+        public bool SimpanTransaksi(string username, List<M_Keranjang> cartItems, string alamat) // ini buat nyimpen data transaksi ke tabel transaksi dan detailtransaksi
         {//kenapa kok ada List<M_Keranjang> cartItems? soalnya kita perlu tau produk apa aja yg dibeli user beserta quantitynya, biar bisa dimasukin ke tabel detailtransaksi
             using (var conn = new NpgsqlConnection(context.connStr))
             {
                 conn.Open();
-                using (var transaction = conn.BeginTransaction()) // pake transaction biar kalo ada error di tengah proses, semua perubahan di database bisa di-rollback, jadi data tetep konsisten. maksudnya gini, misal pas nyimpen data transaksi ke tabel transaksi sukses, tapi pas nyimpen data ke tabel detailtransaksi gagal, maka kita ga mau data transaksi tetep masuk ke database, soalnya kalo sampe masuk, data di database jadi ga konsisten. makanya kita pake transaction biar kalo ada error, semua perubahan di database bisa dibatalin
+                using (var transaction = conn.BeginTransaction())
                 {
-                    try // coba nyimpen data transaksi dan detailtransaksi
+                    try
                     {
+                        // UBAH QUERY INI:
                         string query1 = @"
-                    INSERT INTO transaksi (username, total, is_paid) 
-                    VALUES (@username, @total, @is_paid) 
-                    RETURNING id"; // kenapa ada returning id? soalnya kita perlu tau id transaksi yg baru aja dibuat, biar bisa dipake buat masukin data ke tabel detailtransaksi
+                    INSERT INTO transaksi (username, total, status, alamat_pengiriman) 
+                    VALUES (@username, @total, @status, @alamat) 
+                    RETURNING id";
 
-                        int totalAmount = (int)cartItems.Sum(item => item.SubTotal); // hitung total amount dari semua item di keranjang, cara kerjanya itu kita nge-sum subtotal dari tiap item di keranjang. misal ada 2 item di keranjang, item A subtotalnya 10000, item B subtotalnya 20000, maka totalAmountnya jadi 30000
+                        int totalAmount = (int)cartItems.Sum(item => item.SubTotal);
 
-                        int transaksiId; // ini buat nampung id transaksi yg baru aja dibuat
+                        int transaksiId;
                         using (var cmd = new NpgsqlCommand(query1, conn))
                         {
-                            cmd.Transaction = transaction; // kaitin command ini ke transaction biar kalo ada error, perubahan di database bisa di-rollback. apa itu rollback? rollback itu artinya membatalkan semua perubahan di database yg udah dilakukan di dalam transaction. maksudnya gini, misal pas nyimpen data transaksi ke tabel transaksi sukses, tapi pas nyimpen data ke tabel detailtransaksi gagal, maka kita ga mau data transaksi tetep masuk ke database, soalnya kalo sampe masuk, data di database jadi ga konsisten. makanya kita pake transaction biar kalo ada error, semua perubahan di database bisa dibatalin
+                            cmd.Transaction = transaction;
                             cmd.Parameters.AddWithValue("@username", username);
                             cmd.Parameters.AddWithValue("@total", totalAmount);
-                            cmd.Parameters.AddWithValue("@is_paid", isPaid);
-
+                            cmd.Parameters.AddWithValue("@status", "BelumBayar"); // DEFAULT STATUS
+                            cmd.Parameters.AddWithValue("@alamat", alamat ?? "");
                             transaksiId = Convert.ToInt32(cmd.ExecuteScalar());
                         }
 
+                        // Query detail transaksi tetap sama...
                         string query2 = @"
                     INSERT INTO detailTransaksi 
                     (transaksi_id, produk_id, produk_nama, quantity, price, subtotal) 
-                    VALUES (@transaksi_id, @produk_id, @produk_nama, @quantity, @price, @subtotal)"; // ini buat masukin data ke tabel detailtransaksi
+                    VALUES (@transaksi_id, @produk_id, @produk_nama, @quantity, @price, @subtotal)";
 
                         foreach (var item in cartItems)
                         {
@@ -204,13 +206,14 @@ namespace PROJEK_ANJAY.Controllers
                             }
                         }
 
-                        transaction.Commit(); // kalo semua proses di atas sukses, maka perubahan di database di-commit, artinya semua perubahan di database disimpan permanen
+                        transaction.Commit();
                         return true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        transaction.Rollback(); // kalo ada error di tengah proses, maka semua perubahan di database di-rollback, artinya semua perubahan di database dibatalin
-                        throw;
+                        transaction.Rollback();
+                        MessageBox.Show($"Error: {ex.Message}");
+                        return false;
                     }
                 }
             }
@@ -259,8 +262,7 @@ namespace PROJEK_ANJAY.Controllers
                     }
 
                     // 3. Update status transaksi menjadi SUDAH BAYAR
-                    string updateTransactionQuery = "UPDATE transaksi SET is_paid = true WHERE id = @transaksi_id";
-
+                    string updateTransactionQuery = "UPDATE transaksi SET status = 'Lunas' WHERE id = @transaksi_id";
                     using (var cmd = new NpgsqlCommand(updateTransactionQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@transaksi_id", transactionId);

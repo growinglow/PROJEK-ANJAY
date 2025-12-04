@@ -13,5 +13,6 @@ namespace PROJEK_ANJAY
             ApplicationConfiguration.Initialize();
             Application.Run(new V_FormRegister());
         }
+
     }
 }

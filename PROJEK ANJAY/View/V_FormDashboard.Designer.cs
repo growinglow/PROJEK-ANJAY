@@ -43,6 +43,7 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
+            btnStatus = new Button();
             ((System.ComponentModel.ISupportInitialize)tblDashbord).BeginInit();
             SuspendLayout();
             // 
@@ -53,6 +54,7 @@
             tblDashbord.Columns.AddRange(new DataGridViewColumn[] { NamaProduk2, Deskripsi2, Harga2, Stok2, TambahQ, Qty, Kurangiplis, AddToCart });
             tblDashbord.Location = new Point(604, 196);
             tblDashbord.Name = "tblDashbord";
+            tblDashbord.ReadOnly = true;
             tblDashbord.RowHeadersWidth = 62;
             tblDashbord.Size = new Size(813, 631);
             tblDashbord.TabIndex = 0;
@@ -95,6 +97,7 @@
             TambahQ.HeaderText = "Tambah";
             TambahQ.MinimumWidth = 8;
             TambahQ.Name = "TambahQ";
+            TambahQ.ReadOnly = true;
             TambahQ.Text = "+";
             TambahQ.UseColumnTextForButtonValue = true;
             // 
@@ -110,6 +113,7 @@
             Kurangiplis.HeaderText = "Kurangi";
             Kurangiplis.MinimumWidth = 8;
             Kurangiplis.Name = "Kurangiplis";
+            Kurangiplis.ReadOnly = true;
             Kurangiplis.Text = "-";
             Kurangiplis.UseColumnTextForButtonValue = true;
             // 
@@ -118,6 +122,7 @@
             AddToCart.HeaderText = "Tambah Ke Keranjang";
             AddToCart.MinimumWidth = 8;
             AddToCart.Name = "AddToCart";
+            AddToCart.ReadOnly = true;
             AddToCart.Text = "tambah";
             AddToCart.UseColumnTextForButtonValue = true;
             // 
@@ -187,15 +192,28 @@
             // button3
             // 
             button3.BackColor = Color.FromArgb(0, 64, 0);
-            button3.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button3.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button3.ForeColor = Color.White;
             button3.Location = new Point(78, 232);
             button3.Name = "button3";
             button3.Size = new Size(328, 57);
             button3.TabIndex = 6;
-            button3.Text = "   Produk";
+            button3.Text = "   Pembelian";
             button3.TextAlign = ContentAlignment.MiddleLeft;
             button3.UseVisualStyleBackColor = false;
+            // 
+            // btnStatus
+            // 
+            btnStatus.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnStatus.ForeColor = Color.FromArgb(0, 64, 0);
+            btnStatus.Location = new Point(78, 504);
+            btnStatus.Name = "btnStatus";
+            btnStatus.Size = new Size(328, 59);
+            btnStatus.TabIndex = 7;
+            btnStatus.Text = "   Status Transaksi";
+            btnStatus.TextAlign = ContentAlignment.MiddleLeft;
+            btnStatus.UseVisualStyleBackColor = true;
+            btnStatus.Click += btnStatus_Click;
             // 
             // V_FormDashboard
             // 
@@ -204,6 +222,7 @@
             BackgroundImage = Properties.Resources.PRODUK_PELANGGAN;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1490, 926);
+            Controls.Add(btnStatus);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -236,5 +255,6 @@
         private DataGridViewTextBoxColumn Qty;
         private DataGridViewButtonColumn Kurangiplis;
         private DataGridViewButtonColumn AddToCart;
+        private Button btnStatus;
     }
 }

@@ -24,6 +24,7 @@ namespace PROJEK_ANJAY.View
             currentUser = user;
             payController = new PayController();
             LoadData();
+
         }
         private void LoadData()
         {
@@ -34,7 +35,7 @@ namespace PROJEK_ANJAY.View
                 foreach (var transaksi in listTransaksi)
                 {
                     int rowIndex = tblPembayaran.Rows.Add(
-                        transaksi.Tanggal, transaksi.Barang, transaksi.Total, transaksi.Status);
+                        transaksi.Tanggal, transaksi.Barang, transaksi.Total, transaksi.AlamatPengiriman, transaksi.Status);
                     tblPembayaran.Rows[rowIndex].Tag = transaksi;
                 }
                 if (listTransaksi.Count == 0)
@@ -68,7 +69,7 @@ namespace PROJEK_ANJAY.View
                     $"Silakan transfer ke:\n" +
                     $"Bank: {bankName}\n" +
                     $"VA Number: {vaNumber}\n\n" +
-                    $"Setelah transfer, status akan otomatis berubah menjadi SUDAH BAYAR.",
+                    $"Setelah transfer, status akan dikonfirmasi oleh admin dan berubah menjadi Lunas.",
                     "Konfirmasi Pembayaran",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Information
@@ -78,23 +79,13 @@ namespace PROJEK_ANJAY.View
                 {
                     try
                     {
-                        bool berhasil = payController.BayarSekarang(transaksiId);
-                        if (berhasil)
-                        {
-                            MessageBox.Show(
-                                "Pembayaran berhasil!\n\n" +
-                                "Terima kasih telah melakukan pembayaran. " +
-                                "Pesanan Anda akan segera diproses setelah pembayaran dikonfirmasi.",
-                                "Sukses",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information
-                            );
-                            LoadData(); // Refresh data
-                        }
-                        else
-                        {
-                            MessageBox.Show("Pembayaran gagal. Silakan coba lagi.", "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        MessageBox.Show(
+                            "Terima kasih\n" +
+                            "Admin akan memverifikasi pembayaran Anda",
+                            "Sukses",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -132,7 +123,14 @@ namespace PROJEK_ANJAY.View
         {
             V_FormDashboard formDashboard = new V_FormDashboard(currentUser);
             formDashboard.Show();
-            this.Close(); 
+            this.Close();
+        }
+
+        private void btnStatus_Click(object sender, EventArgs e)
+        {
+            V_StatusTransaksiPlggn v_StatusTransaksiPlggn = new V_StatusTransaksiPlggn(currentUser);
+            v_StatusTransaksiPlggn.Show();
+            this.Close();
         }
     }
 }

@@ -117,6 +117,7 @@
             dgLaporan.Columns.AddRange(new DataGridViewColumn[] { TgglTrans, Usn, Barang, TotalTrans });
             dgLaporan.Location = new Point(627, 363);
             dgLaporan.Name = "dgLaporan";
+            dgLaporan.ReadOnly = true;
             dgLaporan.RowHeadersWidth = 62;
             dgLaporan.Size = new Size(769, 358);
             dgLaporan.TabIndex = 5;
@@ -154,6 +155,7 @@
             TotalTrans.HeaderText = "Total";
             TotalTrans.MinimumWidth = 8;
             TotalTrans.Name = "TotalTrans";
+            TotalTrans.ReadOnly = true;
             TotalTrans.Width = 150;
             // 
             // label1

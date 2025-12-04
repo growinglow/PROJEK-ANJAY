@@ -12,14 +12,16 @@ namespace PROJEK_ANJAY.Controllers
     public class LaporanController
     {
         private PayController payController;
+        private RiwayatTransaksiController riwayatController;
         public LaporanController()
         {
             payController = new PayController(); 
+            riwayatController = new RiwayatTransaksiController();
         }
 
         public (List<M_Pembayaran> data, string judul, int total) GenerateLaporan(string jenis, int? tahun = null)
         {
-            var semuaTransaksi = payController.GetTransaksiLunas();
+            var semuaTransaksi = riwayatController.GetTransSelese();
 
             List<M_Pembayaran> data;
             string judul;

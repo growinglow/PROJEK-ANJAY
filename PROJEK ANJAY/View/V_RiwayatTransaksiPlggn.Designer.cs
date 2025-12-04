@@ -32,19 +32,22 @@
             TglTransaksi = new DataGridViewTextBoxColumn();
             Barang = new DataGridViewTextBoxColumn();
             Total = new DataGridViewTextBoxColumn();
+            Alamat = new DataGridViewTextBoxColumn();
             btnProduk = new Button();
             btnBayar = new Button();
             btnRiwayatTr = new Button();
             button1 = new Button();
+            btnStatus = new Button();
             ((System.ComponentModel.ISupportInitialize)tblRiwayatPlgn).BeginInit();
             SuspendLayout();
             // 
             // tblRiwayatPlgn
             // 
             tblRiwayatPlgn.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            tblRiwayatPlgn.Columns.AddRange(new DataGridViewColumn[] { TglTransaksi, Barang, Total });
+            tblRiwayatPlgn.Columns.AddRange(new DataGridViewColumn[] { TglTransaksi, Barang, Total, Alamat });
             tblRiwayatPlgn.Location = new Point(605, 200);
             tblRiwayatPlgn.Name = "tblRiwayatPlgn";
+            tblRiwayatPlgn.ReadOnly = true;
             tblRiwayatPlgn.RowHeadersWidth = 62;
             tblRiwayatPlgn.Size = new Size(812, 621);
             tblRiwayatPlgn.TabIndex = 0;
@@ -55,6 +58,7 @@
             TglTransaksi.HeaderText = "Tanggal Transaksi";
             TglTransaksi.MinimumWidth = 8;
             TglTransaksi.Name = "TglTransaksi";
+            TglTransaksi.ReadOnly = true;
             TglTransaksi.Width = 150;
             // 
             // Barang
@@ -63,6 +67,7 @@
             Barang.HeaderText = "Barang (Qty)";
             Barang.MinimumWidth = 8;
             Barang.Name = "Barang";
+            Barang.ReadOnly = true;
             Barang.Width = 150;
             // 
             // Total
@@ -71,7 +76,17 @@
             Total.HeaderText = "Total";
             Total.MinimumWidth = 8;
             Total.Name = "Total";
+            Total.ReadOnly = true;
             Total.Width = 150;
+            // 
+            // Alamat
+            // 
+            Alamat.DataPropertyName = "AlamatPengiriman";
+            Alamat.HeaderText = "Alamat";
+            Alamat.MinimumWidth = 8;
+            Alamat.Name = "Alamat";
+            Alamat.ReadOnly = true;
+            Alamat.Width = 150;
             // 
             // btnProduk
             // 
@@ -81,7 +96,7 @@
             btnProduk.Name = "btnProduk";
             btnProduk.Size = new Size(325, 61);
             btnProduk.TabIndex = 1;
-            btnProduk.Text = "   Produk";
+            btnProduk.Text = "   Pembelian";
             btnProduk.TextAlign = ContentAlignment.MiddleLeft;
             btnProduk.UseVisualStyleBackColor = true;
             btnProduk.Click += btnProduk_Click;
@@ -126,6 +141,19 @@
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
+            // btnStatus
+            // 
+            btnStatus.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnStatus.ForeColor = Color.FromArgb(0, 64, 0);
+            btnStatus.Location = new Point(79, 497);
+            btnStatus.Name = "btnStatus";
+            btnStatus.Size = new Size(325, 60);
+            btnStatus.TabIndex = 5;
+            btnStatus.Text = "   Status Transaksi";
+            btnStatus.TextAlign = ContentAlignment.MiddleLeft;
+            btnStatus.UseVisualStyleBackColor = true;
+            btnStatus.Click += btnStatus_Click;
+            // 
             // V_RiwayatTransaksiPlggn
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -133,6 +161,7 @@
             BackgroundImage = Properties.Resources.RIWAYAT_TRANSAKSI_PELANGGAN;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1490, 926);
+            Controls.Add(btnStatus);
             Controls.Add(button1);
             Controls.Add(btnRiwayatTr);
             Controls.Add(btnBayar);
@@ -148,12 +177,14 @@
         #endregion
 
         private DataGridView tblRiwayatPlgn;
-        private DataGridViewTextBoxColumn TglTransaksi;
-        private DataGridViewTextBoxColumn Barang;
-        private DataGridViewTextBoxColumn Total;
         private Button btnProduk;
         private Button btnBayar;
         private Button btnRiwayatTr;
         private Button button1;
+        private DataGridViewTextBoxColumn TglTransaksi;
+        private DataGridViewTextBoxColumn Barang;
+        private DataGridViewTextBoxColumn Total;
+        private DataGridViewTextBoxColumn Alamat;
+        private Button btnStatus;
     }
 }

@@ -48,6 +48,7 @@
             tblRiwayatAdm.Columns.AddRange(new DataGridViewColumn[] { IdTransaksi, Usn, TglTransaksi, Barang, Total });
             tblRiwayatAdm.Location = new Point(604, 203);
             tblRiwayatAdm.Name = "tblRiwayatAdm";
+            tblRiwayatAdm.ReadOnly = true;
             tblRiwayatAdm.RowHeadersWidth = 62;
             tblRiwayatAdm.Size = new Size(840, 625);
             tblRiwayatAdm.TabIndex = 0;
@@ -58,6 +59,7 @@
             IdTransaksi.HeaderText = "Id Transaksi";
             IdTransaksi.MinimumWidth = 8;
             IdTransaksi.Name = "IdTransaksi";
+            IdTransaksi.ReadOnly = true;
             IdTransaksi.Width = 150;
             // 
             // Usn
@@ -66,6 +68,7 @@
             Usn.HeaderText = "Username";
             Usn.MinimumWidth = 8;
             Usn.Name = "Usn";
+            Usn.ReadOnly = true;
             Usn.Width = 150;
             // 
             // TglTransaksi
@@ -74,6 +77,7 @@
             TglTransaksi.HeaderText = "Tanggal Transaksi";
             TglTransaksi.MinimumWidth = 8;
             TglTransaksi.Name = "TglTransaksi";
+            TglTransaksi.ReadOnly = true;
             TglTransaksi.Width = 150;
             // 
             // Barang
@@ -82,6 +86,7 @@
             Barang.HeaderText = "Barang Qty";
             Barang.MinimumWidth = 8;
             Barang.Name = "Barang";
+            Barang.ReadOnly = true;
             Barang.Width = 150;
             // 
             // Total
@@ -90,6 +95,7 @@
             Total.HeaderText = "Total";
             Total.MinimumWidth = 8;
             Total.Name = "Total";
+            Total.ReadOnly = true;
             Total.Width = 150;
             // 
             // btnProduk

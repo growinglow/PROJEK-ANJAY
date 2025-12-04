@@ -9,12 +9,13 @@ namespace PROJEK_ANJAY.View
     public partial class V_laporanPembayaran : Form
     {
         private PayController payController;
-        private User currentUser;
+        private RiwayatTransaksiController riwayatController;
 
         public V_laporanPembayaran()
         {
             InitializeComponent();
             payController = new PayController();
+            riwayatController = new RiwayatTransaksiController();
             SettingCB();
             lblTotalJual.Text = "Pilih tahun untuk melihat laporan penjualan";
         }
@@ -40,7 +41,7 @@ namespace PROJEK_ANJAY.View
             {
                 dgLaporan.Rows.Clear();
 
-                var semuaTransaksi = payController.GetTransaksiLunas();
+                var semuaTransaksi = riwayatController.GetTransSelese();
                 List<M_Pembayaran> listTransaksi;
 
                 if (cbTahun.SelectedIndex > 0)
@@ -65,7 +66,6 @@ namespace PROJEK_ANJAY.View
                     dgLaporan.Rows[rowIndex].Tag = transaksi;
                 }
 
-                // HITUNG TOTAL
                 int total = listTransaksi.Sum(t => t.Total);
                 lblTotalJual.Text = $"Rp {total:N0} | {listTransaksi.Count} transaksi";
 
@@ -89,14 +89,14 @@ namespace PROJEK_ANJAY.View
 
         private void btnStatusTr_Click(object sender, EventArgs e)
         {
-            V_StatusTransaksi v_StatusTransaksi = new V_StatusTransaksi();
-            v_StatusTransaksi.Show();
+            V_StatusTransaksiAdm v_StatusTransaksiAdm = new V_StatusTransaksiAdm();
+            v_StatusTransaksiAdm.Show();
             this.Close();
         }
 
         private void btnRiwayatTr_Click(object sender, EventArgs e)
         {
-            V_RiwayatTransaksiAdm v_RiwayatTransaksiAdm = new V_RiwayatTransaksiAdm(currentUser);
+            V_RiwayatTransaksiAdm v_RiwayatTransaksiAdm = new V_RiwayatTransaksiAdm();
             v_RiwayatTransaksiAdm.Show();
             this.Close();
         }

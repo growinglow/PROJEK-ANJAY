@@ -17,10 +17,9 @@ namespace PROJEK_ANJAY.View
     {
         private User currentUser;
         private RiwayatTransaksiController riwayatController;
-        public V_RiwayatTransaksiAdm(User user)
+        public V_RiwayatTransaksiAdm()
         {
             InitializeComponent();
-            currentUser = user;
             riwayatController = new RiwayatTransaksiController();
             LoadData();
         }
@@ -29,7 +28,7 @@ namespace PROJEK_ANJAY.View
             try
             {
                 tblRiwayatAdm.Rows.Clear();
-                var listTransaksi = riwayatController.GetRiwayat("admin");
+                var listTransaksi = riwayatController.GetTransSelese();
 
                 foreach (var transaksi in listTransaksi)
                 {
@@ -50,7 +49,9 @@ namespace PROJEK_ANJAY.View
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            V_StatusTransaksiAdm v_StatusTransaksiAdm = new V_StatusTransaksiAdm();
+            v_StatusTransaksiAdm.Show();
+            this.Close();
         }
 
         private void btnProduk_Click(object sender, EventArgs e)

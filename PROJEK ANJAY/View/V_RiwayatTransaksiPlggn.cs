@@ -24,6 +24,8 @@ namespace PROJEK_ANJAY.View
             riwayatController = new RiwayatTransaksiController();
             tblRiwayatPlgn.AutoGenerateColumns = false;
             LoadData();
+
+
         }
 
         private void LoadData()
@@ -31,11 +33,11 @@ namespace PROJEK_ANJAY.View
             try
             {
                 tblRiwayatPlgn.Rows.Clear();
-                var listTransaksi = riwayatController.GetRiwayat(currentUser.Username);
+                var listTransaksi = riwayatController.GetTransSelese(currentUser.Username);
 
                 foreach (var transaksi in listTransaksi)
                 {
-                    int rowIndex = tblRiwayatPlgn.Rows.Add(transaksi.TanggalFormatted, transaksi.Barang, transaksi.TotalFormatted);
+                    int rowIndex = tblRiwayatPlgn.Rows.Add(transaksi.TanggalFormatted, transaksi.Barang, transaksi.TotalFormatted, transaksi.AlamatPengiriman);
                     tblRiwayatPlgn.Rows[rowIndex].Tag = transaksi;
                 }
 
@@ -73,6 +75,13 @@ namespace PROJEK_ANJAY.View
                 loginForm.Show();
                 this.Close();
             }
+        }
+
+        private void btnStatus_Click(object sender, EventArgs e)
+        {
+            V_StatusTransaksiPlggn v_Status = new V_StatusTransaksiPlggn(currentUser);
+            v_Status.Show();
+            this.Close();
         }
     }
 }

@@ -7,7 +7,7 @@ using DotNetEnv;
 
 namespace PROJEK_ANJAY.DataBase
 {
-    internal class DbContext
+    public class DbContext
     {
         private string _dbHost;
         private string _dbPort;

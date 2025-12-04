@@ -1,65 +1,129 @@
-﻿using PROJEK_ANJAY.Models;
+﻿using Npgsql;
+using PROJEK_ANJAY.DataBase;
+using PROJEK_ANJAY.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PROJEK_ANJAY.Controllers
 {
-    public abstract class Riwayat 
-    {
-        protected PayController payController;
-
-        public Riwayat(PayController payController)
-        {
-            this.payController = payController;
-        }
-
-        public abstract List<M_Pembayaran> GetRiwayat();
-    }
     public class RiwayatTransaksiController
     {
-        private PayController payController;
+        private DbContext dbcon;
 
         public RiwayatTransaksiController()
         {
-            payController = new PayController();
+            dbcon = new DbContext();
         }
 
-        // polymorphism, overriding method GetRiwayat() 
-        public List<M_Pembayaran> GetRiwayat(string role, string username = "") 
+        // Method overloading 1: Untuk pelanggan
+        public List<M_Pembayaran> GetTransSelese(string username)
         {
-            Riwayat riwayat;
+            List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
 
-            if (role == "admin")
-                riwayat = new RiwayatAdmin(payController); 
-            else
-                riwayat = new RiwayatPelanggan(payController, username); 
+            using (var conn = new NpgsqlConnection(dbcon.connStr))
+            {
+                conn.Open();
+                string query = @"
+                    SELECT id, username, total, status, created_at, alamat_pengiriman 
+                    FROM transaksi 
+                    WHERE status = 'Selesai' AND username = @username
+                    ORDER BY id ASC";
 
-            return riwayat.GetRiwayat(); 
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var transaksi = new M_Pembayaran
+                            {
+                                Id = reader.GetInt32("id"),
+                                Username = reader.GetString("username"),
+                                Total = (int)reader.GetDecimal("total"),
+                                Status = reader.GetString("status"),
+                                AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
+                                Tanggal = reader.GetDateTime("created_at")
+                            };
+                            transaksi.barang = GetDetailBarang(transaksi.Id);
+                            listTransaksi.Add(transaksi);
+                        }
+                    }
+                }
+            }
+            return listTransaksi;
         }
-    }
-    public class RiwayatAdmin : Riwayat 
-    {
-        public RiwayatAdmin(PayController payController) : base(payController) { }
 
-        public override List<M_Pembayaran> GetRiwayat()
+        // Method overloading 2: Untuk admin (semua)
+        public List<M_Pembayaran> GetTransSelese()
         {
-            return payController.GetTransaksiLunas();
-        }
-    }
-    public class RiwayatPelanggan : Riwayat 
-    {
-        private string username;
+            List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
 
-        public RiwayatPelanggan(PayController payController, string username) : base(payController)
-        {
-            username = username;
+            using (var conn = new NpgsqlConnection(dbcon.connStr))
+            {
+                conn.Open();
+                string query = @"
+                    SELECT id, username, total, status, created_at, alamat_pengiriman 
+                    FROM transaksi 
+                    WHERE status = 'Selesai'
+                    ORDER BY id ASC";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var transaksi = new M_Pembayaran
+                            {
+                                Id = reader.GetInt32("id"),
+                                Username = reader.GetString("username"),
+                                Total = (int)reader.GetDecimal("total"),
+                                Status = reader.GetString("status"),
+                                AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
+                                Tanggal = reader.GetDateTime("created_at")
+                            };
+                            transaksi.barang = GetDetailBarang(transaksi.Id);
+                            listTransaksi.Add(transaksi);
+                        }
+                    }
+                }
+            }
+            return listTransaksi;
         }
-        public override List<M_Pembayaran> GetRiwayat()
+
+        // Helper method
+        private List<M_DetailBarang> GetDetailBarang(int transaksiId)
         {
-            return payController.GetTransaksiLunas(username);
+            var detailBarang = new List<M_DetailBarang>();
+
+            using (var conn = new NpgsqlConnection(dbcon.connStr))
+            {
+                conn.Open();
+                string query = "SELECT produk_nama, quantity, price, subtotal FROM detailtransaksi WHERE transaksi_id = @id";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", transaksiId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            detailBarang.Add(new M_DetailBarang
+                            {
+                                NamaProduk = reader.GetString("produk_nama"),
+                                Quantity = reader.GetInt32("quantity"),
+                                Harga = (int)reader.GetDecimal("price"),
+                                Subtotal = (int)reader.GetDecimal("subtotal")
+                            });
+                        }
+                    }
+                }
+            }
+            return detailBarang;
         }
     }
 }

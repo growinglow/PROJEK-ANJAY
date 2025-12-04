@@ -119,7 +119,6 @@ namespace PROJEK_ANJAY.View
         {
             V_Cart FormKeranjang = new V_Cart(currentUser, this);
             FormKeranjang.Show();
-            this.Hide();
 
             LoadProducts();
         }
@@ -149,6 +148,13 @@ namespace PROJEK_ANJAY.View
             V_RiwayatTransaksiPlggn v_RiwayatTransaksiPlggn = new V_RiwayatTransaksiPlggn(currentUser);
             v_RiwayatTransaksiPlggn.Show();
             this.Close();
+        }
+
+        private void btnStatus_Click(object sender, EventArgs e)
+        {
+            V_StatusTransaksiPlggn v_StatusTransaksiPlggn = new V_StatusTransaksiPlggn(currentUser);
+            v_StatusTransaksiPlggn.Show();
+            this.Close();   
         }
     }
 }

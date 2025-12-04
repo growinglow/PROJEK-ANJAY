@@ -51,6 +51,7 @@
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { NamaProduk, Deskripsi, Harga, Stok, Edit, Delete });
             dataGridView1.Location = new Point(590, 131);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 62;
             dataGridView1.Size = new Size(816, 673);
             dataGridView1.TabIndex = 1;
@@ -62,6 +63,7 @@
             NamaProduk.HeaderText = "Nama Produk";
             NamaProduk.MinimumWidth = 8;
             NamaProduk.Name = "NamaProduk";
+            NamaProduk.ReadOnly = true;
             // 
             // Deskripsi
             // 
@@ -69,6 +71,7 @@
             Deskripsi.HeaderText = "Deskripsi";
             Deskripsi.MinimumWidth = 8;
             Deskripsi.Name = "Deskripsi";
+            Deskripsi.ReadOnly = true;
             // 
             // Harga
             // 
@@ -76,6 +79,7 @@
             Harga.HeaderText = "Harga";
             Harga.MinimumWidth = 8;
             Harga.Name = "Harga";
+            Harga.ReadOnly = true;
             // 
             // Stok
             // 
@@ -83,6 +87,7 @@
             Stok.HeaderText = "Stok";
             Stok.MinimumWidth = 8;
             Stok.Name = "Stok";
+            Stok.ReadOnly = true;
             // 
             // Edit
             // 
@@ -90,6 +95,7 @@
             Edit.HeaderText = "Edit";
             Edit.MinimumWidth = 8;
             Edit.Name = "Edit";
+            Edit.ReadOnly = true;
             Edit.Text = "Edit";
             Edit.UseColumnTextForButtonValue = true;
             // 
@@ -99,6 +105,7 @@
             Delete.HeaderText = "Delete";
             Delete.MinimumWidth = 8;
             Delete.Name = "Delete";
+            Delete.ReadOnly = true;
             Delete.Text = "Delete";
             Delete.UseColumnTextForButtonValue = true;
             // 
@@ -177,6 +184,7 @@
             btnStatusTr.Text = "   Status Transaksi";
             btnStatusTr.TextAlign = ContentAlignment.MiddleLeft;
             btnStatusTr.UseVisualStyleBackColor = true;
+            btnStatusTr.Click += btnStatusTr_Click;
             // 
             // V_Products
             // 

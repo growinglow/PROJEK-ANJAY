@@ -13,13 +13,13 @@ namespace PROJEK_ANJAY.Controllers
 {
     public class PayController
     {
-        private string connectionString = "Your_PostgreSQL_Connection_String";
         private DbContext dbcon;
         public PayController()
         {
             dbcon = new DbContext();
         }
-        public List<M_Pembayaran> GetTransaskiBlmByr(string username)
+
+        public List<M_Pembayaran> GetTransaskiBlmByr(string username) //v_pembayaran pelanggan
         {
             List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
 
@@ -27,9 +27,9 @@ namespace PROJEK_ANJAY.Controllers
             {
                 conn.Open();
                 string query = @"
-                    SELECT id, username, total, is_paid, created_at 
+                    SELECT id, username, total, status, created_at, alamat_pengiriman
                     FROM transaksi
-                    WHERE username = @username AND is_paid = false 
+                    WHERE username = @username AND status = 'BelumBayar' 
                     ORDER BY created_at ASC";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -45,7 +45,8 @@ namespace PROJEK_ANJAY.Controllers
                                 Id = reader.GetInt32("id"),
                                 Username = reader.GetString("username"),
                                 Total = (int)reader.GetDecimal("total"),
-                                IsPaid = reader.GetBoolean("is_paid"),
+                                Status = reader.GetString("status"),
+                                AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
                                 Tanggal = reader.GetDateTime("created_at")
                             };
                             transaksi.barang = GetDetailBarang(transaksi.Id);
@@ -57,78 +58,8 @@ namespace PROJEK_ANJAY.Controllers
             return listTransaksi;
         }
 
-        public List<M_Pembayaran> GetTransaksiLunas()
-        {
-            List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
 
-            using (var conn = new NpgsqlConnection(dbcon.connStr))
-            {
-                conn.Open();
-                string query = @"
-                SELECT id, username, total, is_paid, created_at 
-                FROM transaksi 
-                WHERE is_paid = true
-                ORDER BY id ASC";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var transaksi = new M_Pembayaran
-                            {
-                                Id = reader.GetInt32("id"),
-                                Username = reader.GetString("username"),
-                                Total = (int)reader.GetDecimal("total"),
-                                IsPaid = reader.GetBoolean("is_paid"),
-                                Tanggal = reader.GetDateTime("created_at")
-                            };
-                            transaksi.barang = GetDetailBarang(transaksi.Id);
-                            listTransaksi.Add(transaksi);
-                        }
-                    }
-                }
-            }
-            return listTransaksi;
-        }
-
-        public List<M_Pembayaran> GetTransaksiLunas(string username)
-        {
-            List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
-
-            using (var conn = new NpgsqlConnection(dbcon.connStr))
-            {
-                conn.Open();
-                string query = @"
-                    SELECT id, username, total, is_paid, created_at 
-                    FROM transaksi is_paid = true
-                    ORDER BY id ASC";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var transaksi = new M_Pembayaran
-                            {
-                                Id = reader.GetInt32("id"),
-                                Username = reader.GetString("username"),
-                                Total = (int)reader.GetDecimal("total"),
-                                IsPaid = reader.GetBoolean("is_paid"),
-                                Tanggal = reader.GetDateTime("created_at")
-                            };
-                            transaksi.barang = GetDetailBarang(transaksi.Id);
-                            listTransaksi.Add(transaksi);
-                        }
-                    }
-                }
-            }
-            return listTransaksi;
-        }
-
-        private List<M_DetailBarang> GetDetailBarang(int transaksiId)
+        public List<M_DetailBarang> GetDetailBarang(int transaksiId) // disini
         {
             var detailBarang = new List<M_DetailBarang>();
 
@@ -158,81 +89,50 @@ namespace PROJEK_ANJAY.Controllers
             }
             return detailBarang;
         }
-        public bool BayarSekarang(int transaksiId)
+        public bool BayarSekarang(int transaksiId)// disini
+        {
+            try
+            {
+
+                MessageBox.Show(
+                              "Admin akan memverifikasi pembayaran Anda.\n" +
+                              "Status akan berubah menjadi LUNAS setelah dikonfirmasi.",
+                              "Sukses",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Information);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        public bool SimpanTransaksi(string username, List<M_Keranjang> cartItems, string alamat) //disini juga v_pembayaran 
         {
             using (var conn = new NpgsqlConnection(dbcon.connStr))
             {
                 conn.Open();
-
                 using (var transaction = conn.BeginTransaction())
                 {
                     try
                     {
-                        // 1. UPDATE STOK dengan validasi
-                        string updateStokQuery = @" UPDATE products SET stok = stok - dt.quantity FROM detailtransaksi dt 
-                    WHERE products.id = dt.produk_id AND dt.transaksi_id = @transaksiId AND products.stok >= dt.quantity";
-
-                        using (var cmdUpdateStok = new NpgsqlCommand(updateStokQuery, conn))
-                        {
-                            cmdUpdateStok.Transaction = transaction;
-                            cmdUpdateStok.Parameters.AddWithValue("@transaksiId", transaksiId);
-                            cmdUpdateStok.ExecuteNonQuery();
-                        }
-
-                        // 2. UPDATE STATUS TRANSAKSI
-                        string updateStatusQuery = "UPDATE transaksi SET is_paid = true WHERE id = @id";
-                        using (var cmdUpdateStatus = new NpgsqlCommand(updateStatusQuery, conn))
-                        {
-                            cmdUpdateStatus.Transaction = transaction;
-                            cmdUpdateStatus.Parameters.AddWithValue("@id", transaksiId);
-                            int statusUpdated = cmdUpdateStatus.ExecuteNonQuery();
-
-                            if (statusUpdated > 0)
-                            {
-                                transaction.Commit();
-                                MessageBox.Show("Pembayaran berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                return true;
-                            }
-                            else
-                            {
-                                transaction.Rollback();
-                                return false;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
-                    }
-                }
-            }
-        }
-        public bool SimpanTransaksi(string username, List<M_Keranjang> cartItems, bool isPaid) // ini buat nyimpen data transaksi ke tabel transaksi dan detailtransaksi
-        {//kenapa kok ada List<M_Keranjang> cartItems? soalnya kita perlu tau produk apa aja yg dibeli user beserta quantitynya, biar bisa dimasukin ke tabel detailtransaksi
-            using (var conn = new NpgsqlConnection(dbcon.connStr))
-            {
-                conn.Open();
-                using (var transaction = conn.BeginTransaction()) // pake transaction biar kalo ada error di tengah proses, semua perubahan di database bisa di-rollback, jadi data tetep konsisten. maksudnya gini, misal pas nyimpen data transaksi ke tabel transaksi sukses, tapi pas nyimpen data ke tabel detailtransaksi gagal, maka kita ga mau data transaksi tetep masuk ke database, soalnya kalo sampe masuk, data di database jadi ga konsisten. makanya kita pake transaction biar kalo ada error, semua perubahan di database bisa dibatalin
-                {
-                    try // coba nyimpen data transaksi dan detailtransaksi
-                    {
                         string query1 = @"
-                    INSERT INTO transaksi (username, total, is_paid) 
-                    VALUES (@username, @total, @is_paid) 
-                    RETURNING id"; // kenapa ada returning id? soalnya kita perlu tau id transaksi yg baru aja dibuat, biar bisa dipake buat masukin data ke tabel detailtransaksi
+                    INSERT INTO transaksi (username, total, status, alamat_pengiriman) 
+                    VALUES (@username, @total, @status, @alamat) 
+                    RETURNING id"; 
 
-                        int totalAmount = (int)cartItems.Sum(item => item.SubTotal); // hitung total amount dari semua item di keranjang, cara kerjanya itu kita nge-sum subtotal dari tiap item di keranjang. misal ada 2 item di keranjang, item A subtotalnya 10000, item B subtotalnya 20000, maka totalAmountnya jadi 30000
+                        int totalAmount = (int)cartItems.Sum(item => item.SubTotal); 
 
-                        int transaksiId; // ini buat nampung id transaksi yg baru aja dibuat
+                        int transaksiId;
                         using (var cmd = new NpgsqlCommand(query1, conn))
                         {
-                            cmd.Transaction = transaction; // kaitin command ini ke transaction biar kalo ada error, perubahan di database bisa di-rollback. apa itu rollback? rollback itu artinya membatalkan semua perubahan di database yg udah dilakukan di dalam transaction. maksudnya gini, misal pas nyimpen data transaksi ke tabel transaksi sukses, tapi pas nyimpen data ke tabel detailtransaksi gagal, maka kita ga mau data transaksi tetep masuk ke database, soalnya kalo sampe masuk, data di database jadi ga konsisten. makanya kita pake transaction biar kalo ada error, semua perubahan di database bisa dibatalin
+                            cmd.Transaction = transaction; 
                             cmd.Parameters.AddWithValue("@username", username);
                             cmd.Parameters.AddWithValue("@total", totalAmount);
-                            cmd.Parameters.AddWithValue("@is_paid", isPaid);
-
+                            cmd.Parameters.AddWithValue("@status", "BelumBayar");
+                            cmd.Parameters.AddWithValue("@alamat", alamat ?? "");
                             transaksiId = Convert.ToInt32(cmd.ExecuteScalar());
                         }
 
@@ -268,72 +168,226 @@ namespace PROJEK_ANJAY.Controllers
                 }
             }
         }
-        public bool KonfirmPembayaran(int transactionId)
-        {
-            try
-            {
-                using (var conn = new NpgsqlConnection(dbcon.connStr))
-                {
-                    conn.Open();
+        //public List<M_Pembayaran> GetTransaksiLunas()
+        //{
+        //    List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
 
-                    string getTransaksiQuery = "SELECT produk_id, quantity FROM detailtransaksi WHERE transaksi_id = @transaksi_id";
-                    List<(int productId, int quantity)> detailTransaksi = new List<(int, int)>();
+        //    using (var conn = new NpgsqlConnection(dbcon.connStr))
+        //    {
+        //        conn.Open();
+        //        string query = @"
+        //        SELECT id, username, total, status, created_at , alamat_pengiriman
+        //        FROM transaksi 
+        //        WHERE status = 'Lunas'
+        //        ORDER BY id ASC";
 
-                    using (var cmd = new NpgsqlCommand(getTransaksiQuery, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@transaksi_id", transactionId);
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                detailTransaksi.Add((reader.GetInt32(0), reader.GetInt32(1)));
-                            }
-                        }
-                    }
+        //        using (var cmd = new NpgsqlCommand(query, conn))
+        //        {
+        //            using (var reader = cmd.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    var transaksi = new M_Pembayaran
+        //                    {
+        //                        Id = reader.GetInt32("id"),
+        //                        Username = reader.GetString("username"),
+        //                        Total = (int)reader.GetDecimal("total"),
+        //                        Status = reader.GetString("status"),
+        //                        AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
+        //                        Tanggal = reader.GetDateTime("created_at")
+        //                    };
+        //                    transaksi.barang = GetDetailBarang(transaksi.Id);
+        //                    listTransaksi.Add(transaksi);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return listTransaksi;
+        //}
 
-                    foreach (var (productId, quantity) in detailTransaksi)
-                    {
-                        string updateStockQuery = "UPDATE products SET stok = stok - @quantity WHERE id = @product_id AND stok >= @quantity";
+        //public List<M_Pembayaran> GetTransaksiLunas(string username)
+        //{
+        //    List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
 
-                        using (var cmd = new NpgsqlCommand(updateStockQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@quantity", quantity);
-                            cmd.Parameters.AddWithValue("@product_id", productId);
+        //    using (var conn = new NpgsqlConnection(dbcon.connStr))
+        //    {
+        //        conn.Open();
+        //        string query = @"
+        //            SELECT id, username, total, status, created_at, alamat_pengiriman 
+        //            FROM transaksi 
+        //            WHERE status = 'Lunas' AND username = @username
+        //            ORDER BY id ASC";
 
-                            int rowsAffected = cmd.ExecuteNonQuery();
-                            if (rowsAffected == 0)
-                            {
-                                MessageBox.Show($"Stok tidak mencukupi untuk produk ID: {productId}");
-                                return false;
-                            }
-                        }
-                    }
+        //        using (var cmd = new NpgsqlCommand(query, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@username", username);
+        //            using (var reader = cmd.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    var transaksi = new M_Pembayaran
+        //                    {
+        //                        Id = reader.GetInt32("id"),
+        //                        Username = reader.GetString("username"),
+        //                        Total = (int)reader.GetDecimal("total"),
+        //                        Status = reader.GetString("status"),
+        //                        AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
+        //                        Tanggal = reader.GetDateTime("created_at")
+        //                    };
+        //                    transaksi.barang = GetDetailBarang(transaksi.Id);
+        //                    listTransaksi.Add(transaksi);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return listTransaksi;
+        //}
 
-                    string updateTransactionQuery = "UPDATE transaksi SET is_paid = true WHERE id = @transaksi_id";
 
-                    using (var cmd = new NpgsqlCommand(updateTransactionQuery, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@transaksi_id", transactionId);
-                        int rowsAffected = cmd.ExecuteNonQuery();
+        //public bool KonfirmPembayaran(int transactionId)
+        //{
+        //    try
+        //    {
+        //        using (var conn = new NpgsqlConnection(dbcon.connStr))
+        //        {
+        //            conn.Open();
 
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Pembayaran berhasil! Stok telah diperbarui.");
-                            return true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Gagal update status transaksi.");
-                            return false;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error during payment confirmation: {ex.Message}");
-                return false;
-            }
-        }
+        //            string getTransaksiQuery = "SELECT produk_id, quantity FROM detailtransaksi WHERE transaksi_id = @transaksi_id";
+        //            List<(int productId, int quantity)> detailTransaksi = new List<(int, int)>();
+
+        //            using (var cmd = new NpgsqlCommand(getTransaksiQuery, conn))
+        //            {
+        //                cmd.Parameters.AddWithValue("@transaksi_id", transactionId);
+        //                using (var reader = cmd.ExecuteReader())
+        //                {
+        //                    while (reader.Read())
+        //                    {
+        //                        detailTransaksi.Add((reader.GetInt32(0), reader.GetInt32(1)));
+        //                    }
+        //                }
+        //            }
+
+        //            foreach (var (productId, quantity) in detailTransaksi)
+        //            {
+        //                string updateStockQuery = "UPDATE products SET stok = stok - @quantity WHERE id = @product_id AND stok >= @quantity";
+
+        //                using (var cmd = new NpgsqlCommand(updateStockQuery, conn))
+        //                {
+        //                    cmd.Parameters.AddWithValue("@quantity", quantity);
+        //                    cmd.Parameters.AddWithValue("@product_id", productId);
+
+        //                    int rowsAffected = cmd.ExecuteNonQuery();
+        //                    if (rowsAffected == 0)
+        //                    {
+        //                        MessageBox.Show($"Stok tidak mencukupi untuk produk ID: {productId}");
+        //                        return false;
+        //                    }
+        //                }
+        //            }
+
+        //            string updateTransactionQuery = "UPDATE transaksi SET is_paid = true WHERE id = @transaksi_id";
+
+        //            using (var cmd = new NpgsqlCommand(updateTransactionQuery, conn))
+        //            {
+        //                cmd.Parameters.AddWithValue("@transaksi_id", transactionId);
+        //                int rowsAffected = cmd.ExecuteNonQuery();
+
+        //                if (rowsAffected > 0)
+        //                {
+        //                    MessageBox.Show("Pembayaran berhasil! Stok telah diperbarui.");
+        //                    return true;
+        //                }
+        //                else
+        //                {
+        //                    MessageBox.Show("Gagal update status transaksi.");
+        //                    return false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error during payment confirmation: {ex.Message}");
+        //        return false;
+        //    }
+        //}
+        // Di PayController.cs - Tambah method ini
+
+
+        //public List<M_Pembayaran> GetTransSelese(string username) //riwayatcontroller
+        //{
+        //    List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
+
+        //    using (var conn = new NpgsqlConnection(dbcon.connStr))
+        //    {
+        //        conn.Open();
+        //        string query = @"
+        //            SELECT id, username, total, status, created_at, alamat_pengiriman 
+        //            FROM transaksi 
+        //            WHERE status = 'Selesai' AND username = @username
+        //            ORDER BY id ASC";
+
+        //        using (var cmd = new NpgsqlCommand(query, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@username", username);
+        //            using (var reader = cmd.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    var transaksi = new M_Pembayaran
+        //                    {
+        //                        Id = reader.GetInt32("id"),
+        //                        Username = reader.GetString("username"),
+        //                        Total = (int)reader.GetDecimal("total"),
+        //                        Status = reader.GetString("status"),
+        //                        AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
+        //                        Tanggal = reader.GetDateTime("created_at")
+        //                    };
+        //                    transaksi.barang = GetDetailBarang(transaksi.Id);
+        //                    listTransaksi.Add(transaksi);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return listTransaksi;
+        //}
+
+
+        //public List<M_Pembayaran> GetTransSelese() //riwayatcontroller 
+        //{
+        //    List<M_Pembayaran> listTransaksi = new List<M_Pembayaran>();
+
+        //    using (var conn = new NpgsqlConnection(dbcon.connStr))
+        //    {
+        //        conn.Open();
+        //        string query = @"
+        //        SELECT id, username, total, status, created_at , alamat_pengiriman
+        //        FROM transaksi 
+        //        WHERE status = 'Selesai'
+        //        ORDER BY id ASC";
+
+        //        using (var cmd = new NpgsqlCommand(query, conn))
+        //        {
+        //            using (var reader = cmd.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    var transaksi = new M_Pembayaran
+        //                    {
+        //                        Id = reader.GetInt32("id"),
+        //                        Username = reader.GetString("username"),
+        //                        Total = (int)reader.GetDecimal("total"),
+        //                        Status = reader.GetString("status"),
+        //                        AlamatPengiriman = reader.IsDBNull("alamat_pengiriman") ? "" : reader.GetString("alamat_pengiriman"),
+        //                        Tanggal = reader.GetDateTime("created_at")
+        //                    };
+        //                    transaksi.barang = GetDetailBarang(transaksi.Id);
+        //                    listTransaksi.Add(transaksi);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return listTransaksi;
+        //}
     }
 }

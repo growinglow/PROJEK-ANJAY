@@ -40,6 +40,9 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
+            tbAlamat = new TextBox();
+            label1 = new Label();
+            btnStatus = new Button();
             ((System.ComponentModel.ISupportInitialize)tblKeranjang).BeginInit();
             SuspendLayout();
             // 
@@ -50,8 +53,9 @@
             tblKeranjang.Columns.AddRange(new DataGridViewColumn[] { NamaProduk3, Harga3, Qty3, Subtotal });
             tblKeranjang.Location = new Point(604, 204);
             tblKeranjang.Name = "tblKeranjang";
+            tblKeranjang.ReadOnly = true;
             tblKeranjang.RowHeadersWidth = 62;
-            tblKeranjang.Size = new Size(816, 584);
+            tblKeranjang.Size = new Size(816, 470);
             tblKeranjang.TabIndex = 0;
             tblKeranjang.CellContentClick += tblKeranjang_CellContentClick;
             // 
@@ -60,24 +64,28 @@
             NamaProduk3.HeaderText = "Nama Produk";
             NamaProduk3.MinimumWidth = 8;
             NamaProduk3.Name = "NamaProduk3";
+            NamaProduk3.ReadOnly = true;
             // 
             // Harga3
             // 
             Harga3.HeaderText = "Harga";
             Harga3.MinimumWidth = 8;
             Harga3.Name = "Harga3";
+            Harga3.ReadOnly = true;
             // 
             // Qty3
             // 
             Qty3.HeaderText = "Quantity";
             Qty3.MinimumWidth = 8;
             Qty3.Name = "Qty3";
+            Qty3.ReadOnly = true;
             // 
             // Subtotal
             // 
             Subtotal.HeaderText = "Sub Total";
             Subtotal.MinimumWidth = 8;
             Subtotal.Name = "Subtotal";
+            Subtotal.ReadOnly = true;
             // 
             // lblTotal
             // 
@@ -114,7 +122,7 @@
             // 
             // btnPembayaran
             // 
-            btnPembayaran.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPembayaran.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPembayaran.ForeColor = Color.FromArgb(0, 64, 0);
             btnPembayaran.ImageAlign = ContentAlignment.MiddleLeft;
             btnPembayaran.Location = new Point(75, 320);
@@ -141,13 +149,14 @@
             // 
             // button2
             // 
-            button2.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.FromArgb(0, 64, 0);
             button2.Location = new Point(75, 411);
             button2.Name = "button2";
             button2.Size = new Size(329, 61);
             button2.TabIndex = 7;
-            button2.Text = "Riwayat Transaksi";
+            button2.Text = "   Riwayat Transaksi";
+            button2.TextAlign = ContentAlignment.MiddleLeft;
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
@@ -161,9 +170,42 @@
             button3.Name = "button3";
             button3.Size = new Size(329, 60);
             button3.TabIndex = 8;
-            button3.Text = "   Produk";
+            button3.Text = "   Pembelian";
             button3.TextAlign = ContentAlignment.MiddleLeft;
             button3.UseVisualStyleBackColor = false;
+            // 
+            // tbAlamat
+            // 
+            tbAlamat.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tbAlamat.Location = new Point(847, 704);
+            tbAlamat.Multiline = true;
+            tbAlamat.Name = "tbAlamat";
+            tbAlamat.Size = new Size(573, 40);
+            tbAlamat.TabIndex = 9;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(598, 704);
+            label1.Name = "label1";
+            label1.Size = new Size(243, 32);
+            label1.TabIndex = 10;
+            label1.Text = "Detail alamat tujuan:";
+            // 
+            // btnStatus
+            // 
+            btnStatus.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnStatus.ForeColor = Color.FromArgb(0, 64, 0);
+            btnStatus.Location = new Point(75, 496);
+            btnStatus.Name = "btnStatus";
+            btnStatus.Size = new Size(329, 60);
+            btnStatus.TabIndex = 11;
+            btnStatus.Text = "   Status Transaksi";
+            btnStatus.TextAlign = ContentAlignment.MiddleLeft;
+            btnStatus.UseVisualStyleBackColor = true;
+            btnStatus.Click += btnStatus_Click;
             // 
             // V_Cart
             // 
@@ -172,6 +214,9 @@
             BackgroundImage = Properties.Resources.PRODUK_PELANGGAN__2_;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1490, 926);
+            Controls.Add(btnStatus);
+            Controls.Add(label1);
+            Controls.Add(tbAlamat);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -202,5 +247,8 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private TextBox tbAlamat;
+        private Label label1;
+        private Button btnStatus;
     }
 }

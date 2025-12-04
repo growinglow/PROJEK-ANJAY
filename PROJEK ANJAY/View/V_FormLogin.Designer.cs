@@ -38,9 +38,10 @@
             // button1
             // 
             button1.BackColor = Color.Lime;
-            button1.Location = new Point(863, 816);
+            button1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(861, 816);
             button1.Name = "button1";
-            button1.Size = new Size(157, 62);
+            button1.Size = new Size(162, 62);
             button1.TabIndex = 0;
             button1.Text = "LOGIN";
             button1.UseVisualStyleBackColor = false;
@@ -48,20 +49,26 @@
             // 
             // tbUsername
             // 
-            tbUsername.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            tbUsername.Location = new Point(738, 454);
+            tbUsername.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbUsername.ForeColor = Color.FromArgb(64, 64, 64);
+            tbUsername.Location = new Point(738, 445);
+            tbUsername.Multiline = true;
             tbUsername.Name = "tbUsername";
-            tbUsername.Size = new Size(390, 45);
+            tbUsername.Size = new Size(390, 63);
             tbUsername.TabIndex = 2;
+            tbUsername.TextAlign = HorizontalAlignment.Center;
             tbUsername.TextChanged += tbUsername_TextChanged;
             // 
             // tbPassword
             // 
-            tbPassword.Font = new Font("Segoe UI Black", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            tbPassword.Location = new Point(749, 615);
+            tbPassword.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbPassword.ForeColor = Color.FromArgb(64, 64, 64);
+            tbPassword.Location = new Point(749, 604);
+            tbPassword.Multiline = true;
             tbPassword.Name = "tbPassword";
-            tbPassword.Size = new Size(369, 45);
+            tbPassword.Size = new Size(369, 66);
             tbPassword.TabIndex = 4;
+            tbPassword.TextAlign = HorizontalAlignment.Center;
             // 
             // label1
             // 
@@ -79,7 +86,7 @@
             linkLabel1.AutoSize = true;
             linkLabel1.BackColor = Color.Transparent;
             linkLabel1.LinkColor = Color.FromArgb(0, 64, 0);
-            linkLabel1.Location = new Point(1393, 21);
+            linkLabel1.Location = new Point(1387, 20);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(75, 25);
             linkLabel1.TabIndex = 6;

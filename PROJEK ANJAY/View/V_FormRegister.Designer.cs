@@ -38,20 +38,27 @@
             // 
             // tbUsername
             // 
-            tbUsername.Location = new Point(546, 270);
+            tbUsername.Cursor = Cursors.IBeam;
+            tbUsername.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbUsername.ForeColor = Color.FromArgb(64, 64, 64);
+            tbUsername.Location = new Point(546, 272);
             tbUsername.Multiline = true;
             tbUsername.Name = "tbUsername";
-            tbUsername.Size = new Size(434, 61);
+            tbUsername.Size = new Size(434, 60);
             tbUsername.TabIndex = 1;
+            tbUsername.TextAlign = HorizontalAlignment.Center;
             tbUsername.TextChanged += tbUsername_TextChanged;
             // 
             // tbPassword
             // 
+            tbPassword.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbPassword.ForeColor = Color.FromArgb(64, 64, 64);
             tbPassword.Location = new Point(546, 397);
             tbPassword.Multiline = true;
             tbPassword.Name = "tbPassword";
             tbPassword.Size = new Size(434, 60);
             tbPassword.TabIndex = 2;
+            tbPassword.TextAlign = HorizontalAlignment.Center;
             // 
             // btnSignUp
             // 
@@ -81,20 +88,25 @@
             // 
             // tbNotelp
             // 
+            tbNotelp.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             tbNotelp.Location = new Point(546, 657);
             tbNotelp.Multiline = true;
             tbNotelp.Name = "tbNotelp";
             tbNotelp.Size = new Size(434, 58);
             tbNotelp.TabIndex = 12;
+            tbNotelp.TextAlign = HorizontalAlignment.Center;
             tbNotelp.TextChanged += tbNotelp_TextChanged;
             // 
             // tbEmail
             // 
+            tbEmail.Font = new Font("Segoe UI Semibold", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tbEmail.ForeColor = Color.FromArgb(64, 64, 64);
             tbEmail.Location = new Point(546, 524);
             tbEmail.Multiline = true;
             tbEmail.Name = "tbEmail";
             tbEmail.Size = new Size(434, 62);
             tbEmail.TabIndex = 13;
+            tbEmail.TextAlign = HorizontalAlignment.Center;
             tbEmail.TextChanged += tbEmail_TextChanged;
             // 
             // V_FormRegister
